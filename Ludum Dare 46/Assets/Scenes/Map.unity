@@ -646,6 +646,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vitality: 100
+  attack: 7
   demonMeter: 50
   demonMeterDepletionRate: 10
   demonMeterSlider: {fileID: 1130178164}

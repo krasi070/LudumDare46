@@ -4,6 +4,8 @@
     Defense,    // Increases defense
     Claws,      // Increases damage dealt to eyes
     Poison,     // Poison attack
+    Immunity,   // Poison immunity
+    Lucky,      // Increase critical hit chance
     GodPower,   // Geatly increases damage dealt but demon meter depletes faster
     Runner,     // Increase speed
     Imbalance,  // Decrease speed

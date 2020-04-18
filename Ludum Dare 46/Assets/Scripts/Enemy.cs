@@ -1,14 +1,57 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class Enemy : MonoBehaviour
 {
+    public EnemyType type;
+
     public BodyPart[] bodyParts;
     public BodyPart selectedBodyPart;
 
     public TextMeshProUGUI bodyPartNameUi;
     public Slider bodyPartVitalitySlider;
+
+    public bool IsAlive
+    {
+        get
+        {
+            if (selectedBodyPart != null)
+            {
+                return selectedBodyPart.IsAlive;
+            }
+
+            return true;
+        }
+    }
+
+    public bool IsPoisoned { get; set; }
+
+    public Dictionary<BodyPartTrait, int> Traits { get; private set; }
+
+    private void Start()
+    {
+        SetTraits();
+    }
+
+    public void Act()
+    {
+        // TODO: Implement enemy AI
+        PlayerStatus.Vitality -= 10;
+    }
+
+    public bool TakeDamage(int amount)
+    {
+        if (selectedBodyPart != null)
+        {
+            selectedBodyPart.vitality -= amount;
+            bodyPartVitalitySlider.maxValue = selectedBodyPart.data.vitality;
+            bodyPartVitalitySlider.value = selectedBodyPart.vitality;
+        }
+
+        return selectedBodyPart != null && selectedBodyPart.vitality <= 0;
+    }
 
     public void UnselectBodyPart()
     {
@@ -38,5 +81,23 @@ public class Enemy : MonoBehaviour
         bodyPartVitalitySlider.maxValue = bodyPart.data.vitality;
         bodyPartVitalitySlider.value = bodyPart.vitality;
         bodyPartVitalitySlider.gameObject.SetActive(true);
+    }
+
+    private void SetTraits()
+    {
+        Traits = new Dictionary<BodyPartTrait, int>();
+
+        foreach (BodyPart bodyPart in bodyParts)
+        {
+            foreach (BodyPartTrait trait in bodyPart.data.traits)
+            {
+                if (!Traits.ContainsKey(trait))
+                {
+                    Traits.Add(trait, 0);
+                }
+
+                Traits[trait]++;
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerCollision : MonoBehaviour
@@ -11,7 +12,8 @@ public class PlayerCollision : MonoBehaviour
     {
         if (interactPrompt.activeSelf && Input.GetAxis("Interact") > 0)
         {
-            UpdatePlayerStatus();
+            EnemyType fightingWith = (EnemyType)Enum.Parse(typeof(EnemyType), _collided.tag);
+            GetComponent<Player>().PrepareForEncounter(fightingWith);
             SceneManager.LoadScene("Battle");
         }
     }
@@ -25,12 +27,5 @@ public class PlayerCollision : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         interactPrompt.SetActive(false);
-    }
-
-    private void UpdatePlayerStatus()
-    {
-        Player player = GetComponent<Player>();
-        PlayerStatus.Vitality = player.vitality;
-        PlayerStatus.DemonMeter = player.demonMeter;
     }
 }

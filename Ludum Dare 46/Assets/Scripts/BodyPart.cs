@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using TMPro;
 
 public class BodyPart : MonoBehaviour
 {
@@ -10,8 +9,17 @@ public class BodyPart : MonoBehaviour
     private SpriteRenderer _renderer;
     private Enemy _parent;
 
+    public bool IsAlive
+    {
+        get
+        {
+            return vitality > 0;
+        }
+    }
+
     private void Start()
     {
+        vitality = data.vitality;
         _renderer = GetComponent<SpriteRenderer>();
         _parent = transform.parent.GetComponent<Enemy>();
     }

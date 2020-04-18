@@ -2,10 +2,13 @@
 
 public class BattleManager : MonoBehaviour
 {
-    private void Start()
+    public Enemy enemy;
+
+    private void Update()
     {
-        // Test
-        Debug.Log($"Vitality: {PlayerStatus.Vitality}");
-        Debug.Log($"Demon meter: {PlayerStatus.DemonMeter}");
+        if (enemy.selectedBodyPart != null)
+        {
+            Debug.Log(enemy.selectedBodyPart.data.name);
+        }
     }
 }

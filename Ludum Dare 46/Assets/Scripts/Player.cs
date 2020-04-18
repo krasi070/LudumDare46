@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    public float health;
+    public int vitality;
     public float demonMeter;
     public float demonMeterDepletionRate;
 

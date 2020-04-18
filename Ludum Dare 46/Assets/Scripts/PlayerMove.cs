@@ -25,7 +25,7 @@ public class PlayerMove : MonoBehaviour
         _rb.MovePosition(_rb.position + _direction * speed * Time.fixedDeltaTime);
 
         // Deplete demon meter every step
-        if (_direction.x != 0 || _direction.y != 0)
+        if ((_direction.x != 0 || _direction.y != 0) && _player.demonMeter > 0)
         {
             _player.demonMeter -= _player.demonMeterDepletionRate * Time.fixedDeltaTime;
             _player.UpdateDemonMeter();

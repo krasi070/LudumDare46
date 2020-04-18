@@ -5,18 +5,19 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    public const int MAX_VITAITY = 100;
-    public const int MAX_DEMON_METER = 360;
-    public const int CRITICAL_HIT_CHANCE = 1;
-    public const int CRITICAL_HIT_MULTIPLIER = 3;
-    public const int EXTRA_DAMAGE = 4;
-
     public int vitality;
-    public int attack;
     public float demonMeter;
     public float demonMeterDepletionRate;
 
     public Slider demonMeterSlider;
+
+    private void Awake()
+    {
+        if (MapStatus.PlayerPosition != null)
+        {
+            transform.position = MapStatus.PlayerPosition;
+        }
+    }
 
     private void Start()
     {
@@ -49,18 +50,9 @@ public class Player : MonoBehaviour
 
     public void PrepareForEncounter(EnemyType enemyType)
     {
-        PlayerStatus.MaxVitality = MAX_VITAITY;
         PlayerStatus.Vitality = vitality;
-
-        PlayerStatus.MaxDemonMeter = MAX_DEMON_METER;
         PlayerStatus.DemonMeter = demonMeter;
-
-        PlayerStatus.Attack = attack;
-        PlayerStatus.ExtraDamage = EXTRA_DAMAGE;
-
-        PlayerStatus.CriticalHitChance = CRITICAL_HIT_CHANCE;
-        PlayerStatus.CriticalHitMultiplier = CRITICAL_HIT_MULTIPLIER;
-
+        PlayerStatus.DemonMeterDepletionRate = demonMeterDepletionRate;
         PlayerStatus.FightingWith = enemyType;
 
         foreach (BodyPartType bodyPart in PlayerStatus.BodyParts.Keys)

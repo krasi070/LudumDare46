@@ -646,7 +646,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vitality: 100
-  attack: 7
   demonMeter: 50
   demonMeterDepletionRate: 10
   demonMeterSlider: {fileID: 1130178164}
@@ -662,7 +661,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c7156b77a086b646943bdc979bec12e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactPrompt: {fileID: 1246923024}
+  interactPrompt: {fileID: 1246923026}
 --- !u!1001 &930022502
 PrefabInstance:
   m_ObjectHideFlags: 0

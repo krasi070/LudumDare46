@@ -1,31 +1,43 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class PlayerCollision : MonoBehaviour
 {
-    public GameObject interactPrompt;
+    public TextMeshProUGUI interactPrompt;
 
     private GameObject _collided;
 
     private void Update()
     {
-        if (interactPrompt.activeSelf && Input.GetAxis("Interact") > 0)
+        if (interactPrompt.gameObject.activeSelf && Input.GetAxis("Interact") > 0)
         {
             EnemyType fightingWith = (EnemyType)Enum.Parse(typeof(EnemyType), _collided.tag);
             GetComponent<Player>().PrepareForEncounter(fightingWith);
+            MapStatus.InteractedWith.Add(_collided.name);
+            MapStatus.Save();
             SceneManager.LoadScene("Battle");
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        interactPrompt.SetActive(true);
+        interactPrompt.gameObject.SetActive(true);
+        if (MapStatus.InteractedWith.Contains(collision.gameObject.name))
+        {
+            interactPrompt.text = "It's dead.";
+        }
+        else
+        {
+            interactPrompt.text = "[E] Attack";
+        }
+
         _collided = collision.gameObject;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        interactPrompt.SetActive(false);
+        interactPrompt.gameObject.SetActive(false);
     }
 }

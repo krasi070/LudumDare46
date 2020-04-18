@@ -2,13 +2,15 @@
 
 public static class PlayerStatus
 {
-    public static int MaxVitality { get; set; }
+    public static int MaxVitality { get; set; } = 100;
 
-    public static int Vitality { get; set; }
+    public static int Vitality { get; set; } = 100;
 
-    public static float MaxDemonMeter { get; set; }
+    public static float MaxDemonMeter { get; set; } = 360;
 
-    public static float DemonMeter { get; set; }
+    public static float DemonMeter { get; set; } = 180;
+
+    public static float DemonMeterDepletionRate { get; set; } = 10;
 
     public static bool IsAlive
     {
@@ -18,17 +20,17 @@ public static class PlayerStatus
         }
     }
 
-    public static int Attack { get; set; }
+    public static int Attack { get; set; } = 6;
 
-    public static int ExtraDamage { get; set; }
+    public static int ExtraDamage { get; set; } = 4;
 
-    public static int CriticalHitChance { get; set; }
-    
-    public static int CriticalHitMultiplier { get; set; }
+    public static int CriticalHitChance { get; set; } = 1;
 
-    public static int EvadeChance { get; set; }
+    public static int CriticalHitMultiplier { get; set; } = 3;
 
-    public static bool IsPoisoned { get; set; }
+    public static int EvadeChance { get; set; } = 0;
+
+    public static bool IsPoisoned { get; set; } = false;
 
     public static Dictionary<BodyPartType, BodyPartData> BodyParts { get; set; }
 

@@ -6,9 +6,6 @@ public class BattleManager : MonoBehaviour
 
     private void Update()
     {
-        if (enemy.selectedBodyPart != null)
-        {
-            Debug.Log(enemy.selectedBodyPart.data.name);
-        }
+        // TODO: Battle system
     }
 }

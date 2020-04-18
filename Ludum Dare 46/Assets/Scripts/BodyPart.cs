@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using TMPro;
 
 public class BodyPart : MonoBehaviour
 {
@@ -18,13 +19,16 @@ public class BodyPart : MonoBehaviour
     private void OnMouseEnter()
     {
         _renderer.enabled = true;
+        _parent.ShowBodyPartUi(this);
     }
 
     private void OnMouseDown()
     {
         if (_isSelected)
         {
-            Unselect();
+            _isSelected = false;
+            _renderer.color = Color.white;
+            _parent.selectedBodyPart = null;
         }
         else
         {
@@ -34,10 +38,20 @@ public class BodyPart : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (!_isSelected)
+        if (_parent.selectedBodyPart == null)
+        {
+            _renderer.enabled = false;
+            _parent.bodyPartNameUi.gameObject.SetActive(false);
+            _parent.bodyPartVitalitySlider.gameObject.SetActive(false);
+
+            return;
+        }
+        else if (!_isSelected) 
         {
             _renderer.enabled = false;
         }
+
+        _parent.ShowBodyPartUi();
     }
 
     public void Select()

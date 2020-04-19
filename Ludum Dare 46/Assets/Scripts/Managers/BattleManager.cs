@@ -14,7 +14,8 @@ public class BattleManager : MonoBehaviour
     private static Dictionary<EnemyType, Dictionary<string, int>> _enemiesTable; 
 
     private Enemy _enemy;
-    private BattleState _state;
+
+    public BattleState State { get; private set; }
 
     private void Awake()
     {
@@ -23,16 +24,50 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
-        _state = BattleState.Start;
+        State = BattleState.Start;
         InitEnemiesTable();
         SetRandomEnemy();
         SetUpPlayer();
-        ShowInfoText($"Encountered a {_enemy.type.ToString().ToLower()}! Steal a body part!");
+        ShowInfoText($"Encountered {_enemy.name}! Steal a body part!");
     }
 
     private void Update()
     {
         ExecuteActionBasedOnState();
+    }
+
+    public void UpdateState()
+    {
+        if (State == BattleState.Start)
+        {
+            State = BattleState.PlayerTurn;
+        }
+        else if (!PlayerStatus.IsAlive)
+        {
+            State = BattleState.Lose;
+        }
+        else if (!_enemy.IsAlive)
+        {
+            State = BattleState.Win;
+        }
+        else if (State == BattleState.PlayerTurn)
+        {
+            State = BattleState.EndPlayerTurn;
+        }
+        else if (State == BattleState.EndPlayerTurn)
+        {
+            State = BattleState.EnemyTurn;
+            StartEnemyTurnActions();
+        }
+        else if (State == BattleState.EnemyTurn)
+        {
+            State = BattleState.EndEnemyTurn;
+        }
+        else if (State == BattleState.EndEnemyTurn)
+        {
+            State = BattleState.PlayerTurn;
+            StartPlayerTurnActions();
+        }
     }
 
     // PLAYER ACTIONS START HERE
@@ -42,9 +77,10 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     public void Stab()
     {
+        bool isCriticalHit = Random.Range(1, 101) <= PlayerStatus.CriticalHitChance;
         int damageToDeal = PlayerStatus.Attack + Random.Range(0, PlayerStatus.ExtraDamage + 1);
 
-        if (Random.Range(1, 101) <= PlayerStatus.CriticalHitChance)
+        if (isCriticalHit)
         {
             damageToDeal *= PlayerStatus.CriticalHitMultiplier;
             // TODO: Give feedback to player that attack was critical
@@ -52,6 +88,15 @@ public class BattleManager : MonoBehaviour
 
         _enemy.TakeDamage(damageToDeal);
         UpdateState();
+
+        if (isCriticalHit)
+        {
+            ShowInfoText($"Critical stab! {_enemy.name}'s {_enemy.selectedBodyPart.data.name.ToLower()} took {damageToDeal} damage!");
+        }
+        else
+        {
+            ShowInfoText($"You stabbed {_enemy.name}'s {_enemy.selectedBodyPart.data.name.ToLower()} for {damageToDeal} damage!");
+        }
     }
 
     /// <summary>
@@ -61,6 +106,8 @@ public class BattleManager : MonoBehaviour
     {
         PlayerStatus.EvadeChance = 50;
         UpdateState();
+
+        ShowInfoText($"Anticipating {_enemy.name}'s next attack...");
     }
 
     /// <summary>
@@ -68,6 +115,8 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     public void Claws()
     {
+        bool isCriticalHit = Random.Range(1, 101) <= PlayerStatus.CriticalHitChance;
+        bool isEye = false;
         int damageToDeal = PlayerStatus.Attack;
 
         if (Random.Range(1, 101) <= PlayerStatus.CriticalHitChance)
@@ -81,6 +130,7 @@ public class BattleManager : MonoBehaviour
             {
                 if (type == BodyPartType.LeftEye || type == BodyPartType.RightEye)
                 {
+                    isEye = true;
                     damageToDeal *= 2;
                     break;
                 }
@@ -89,6 +139,19 @@ public class BattleManager : MonoBehaviour
 
         _enemy.TakeDamage(damageToDeal);
         UpdateState();
+
+        if (isCriticalHit)
+        {
+            ShowInfoText($"Critical claw attack! {_enemy.name}'s {_enemy.selectedBodyPart.data.name.ToLower()} took {damageToDeal} damage!");
+        }
+        else if (isEye)
+        {
+            ShowInfoText($"Gouged {_enemy.name}'s {_enemy.selectedBodyPart.data.name.ToLower()} for {damageToDeal} damage!");
+        }
+        else
+        {
+            ShowInfoText($"{_enemy.name}'s {_enemy.selectedBodyPart.data.name.ToLower()} for {damageToDeal} damage. Should've went for the eyes.");
+        }
     }
 
     /// <summary>
@@ -103,6 +166,8 @@ public class BattleManager : MonoBehaviour
         }
 
         UpdateState();
+
+        ShowInfoText($"Poisoned {_enemy.name}! It will spread to every body part.");
     }
 
     /// <summary>
@@ -114,33 +179,39 @@ public class BattleManager : MonoBehaviour
 
         if (PlayerStatus.DemonMeter - amountRequired <= 0)
         {
-            // Cannot activate action
+            ShowInfoText($"Not enough demon life force to use Wrath.");
+
             return;
         }
 
         PlayerStatus.DemonMeter -= amountRequired;
         UpdatePlayerUi();
         float damageToDeal = (PlayerStatus.Attack + Random.Range(0, PlayerStatus.ExtraDamage + 1)) * 1.5f;
+        bool isCriticalHit = Random.Range(1, 101) <= PlayerStatus.CriticalHitChance;
 
-        if (Random.Range(1, 101) <= PlayerStatus.CriticalHitChance)
+        if (isCriticalHit)
         {
             damageToDeal *= PlayerStatus.CriticalHitMultiplier;
         }
 
         _enemy.TakeDamage(Mathf.CeilToInt(damageToDeal));
         UpdateState();
+
+        if (isCriticalHit)
+        {
+            ShowInfoText($"Critical attack! {_enemy.name}'s {_enemy.selectedBodyPart.data.name.ToLower()} took {Mathf.CeilToInt(damageToDeal)} damage from your wrath!");
+        }
+        else
+        {
+            ShowInfoText($"You used Wrath against {_enemy.name}'s {_enemy.selectedBodyPart.data.name.ToLower()}! Dealt {Mathf.CeilToInt(damageToDeal)} damage!");
+        }
     }
 
     // PLAYER ACTIONS END HERE
 
     private void ExecuteActionBasedOnState()
     {
-        if (_state == BattleState.Start && _enemy.selectedBodyPart != null)
-        {
-            _state = BattleState.PlayerTurn;
-        }
-
-        if (_state == BattleState.PlayerTurn)
+        if (State == BattleState.PlayerTurn)
         {
             if (_enemy.selectedBodyPart == null)
             {
@@ -152,19 +223,20 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        if (_state == BattleState.EnemyTurn)
+        if (State == BattleState.EnemyTurn)
         {
-            _enemy.Act();
+            string attackInfo = _enemy.Act();
+            ShowInfoText(attackInfo);
             UpdatePlayerUi();
             UpdateState();
         }
 
-        if (_state == BattleState.Win)
+        if (State == BattleState.Win)
         {
             SceneManager.LoadScene("Map");
         }
 
-        if (_state == BattleState.Lose)
+        if (State == BattleState.Lose)
         {
             SceneManager.LoadScene("GameOver");
         }
@@ -227,6 +299,7 @@ public class BattleManager : MonoBehaviour
 
     private void ShowInfoText(string text)
     {
+        buttonLayout.GetComponentInChildren<ActionButton>().HideTextBox();
         buttonLayout.SetActive(false);
         info.gameObject.SetActive(true);
 
@@ -248,7 +321,7 @@ public class BattleManager : MonoBehaviour
 
             if (!_enemy.IsAlive)
             {
-                _state = BattleState.Win;
+                State = BattleState.Win;
             }
         }
     }
@@ -262,30 +335,8 @@ public class BattleManager : MonoBehaviour
 
             if (!PlayerStatus.IsAlive)
             {
-                _state = BattleState.Lose;
+                State = BattleState.Lose;
             }
-        }
-    }
-
-    private void UpdateState()
-    {
-        if (!PlayerStatus.IsAlive)
-        {
-            _state = BattleState.Lose;
-        }
-        else if (!_enemy.IsAlive)
-        {
-            _state = BattleState.Win;
-        }
-        else if (_state == BattleState.PlayerTurn)
-        {
-            _state = BattleState.EnemyTurn;
-            StartEnemyTurnActions();
-        }
-        else if (_state == BattleState.EnemyTurn)
-        {
-            _state = BattleState.PlayerTurn;
-            StartPlayerTurnActions();
         }
     }
 }

@@ -2,7 +2,9 @@
 {
     Start,
     PlayerTurn,
+    EndPlayerTurn,
     EnemyTurn,
+    EndEnemyTurn,
     Win,
     Lose
 }

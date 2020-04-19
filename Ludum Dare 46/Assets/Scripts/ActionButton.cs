@@ -34,6 +34,11 @@ public class ActionButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        HideTextBox();
+    }
+
+    public void HideTextBox()
+    {
         _descriptionTextBox.enabled = false;
         _descriptionTextMesh.enabled = false;
     }

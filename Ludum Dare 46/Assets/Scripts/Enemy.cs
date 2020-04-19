@@ -5,6 +5,7 @@ using TMPro;
 
 public class Enemy : MonoBehaviour
 {
+    public new string name;
     public EnemyType type;
 
     public BodyPart[] bodyParts;
@@ -35,10 +36,12 @@ public class Enemy : MonoBehaviour
         SetTraits();
     }
 
-    public void Act()
+    public string Act()
     {
         // TODO: Implement enemy AI
         PlayerStatus.Vitality -= 10;
+
+        return $"{name} attacks you for 10 damage.";
     }
 
     public bool TakeDamage(int amount)

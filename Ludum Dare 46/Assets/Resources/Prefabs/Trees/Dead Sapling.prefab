@@ -819,6 +819,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c98c9dca632e28d4883614d313059879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: Dead Sapling
   type: 2
   bodyParts:
   - {fileID: 5455959871909503626}

@@ -13,10 +13,17 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        Cursor.visible = false;
+
         if (MapStatus.PlayerPosition != null)
         {
             transform.position = MapStatus.PlayerPosition;
         }
+
+        vitality = PlayerStatus.Vitality;
+        demonMeter = PlayerStatus.DemonMeter;
+        demonMeterDepletionRate = PlayerStatus.DemonMeterDepletionRate;
+        UpdateDemonMeter();
     }
 
     private void Start()
@@ -45,7 +52,9 @@ public class Player : MonoBehaviour
 
     public void UpdateDemonMeter()
     {
+        demonMeterSlider.maxValue = PlayerStatus.MaxDemonMeter;
         demonMeterSlider.value = demonMeter;
+
     }
 
     public void PrepareForEncounter(EnemyType enemyType)

@@ -16,6 +16,11 @@ public class BattleManager : MonoBehaviour
     private Enemy _enemy;
     private BattleState _state;
 
+    private void Awake()
+    {
+        Cursor.visible = true;
+    }
+
     private void Start()
     {
         _state = BattleState.Start;
@@ -161,8 +166,7 @@ public class BattleManager : MonoBehaviour
 
         if (_state == BattleState.Lose)
         {
-            Debug.Log("Game over!");
-            // TODO: Implement game over screen
+            SceneManager.LoadScene("GameOver");
         }
     }
 

@@ -11,4 +11,11 @@ public class MapStatus : MonoBehaviour
     {
         PlayerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
     }
+
+    public static void Reset()
+    {
+        PlayerPosition = Vector2.zero;
+        InteractedWith = new HashSet<string>();
+    }
+
 }

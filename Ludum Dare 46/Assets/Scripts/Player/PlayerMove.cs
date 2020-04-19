@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -18,6 +19,11 @@ public class PlayerMove : MonoBehaviour
     {
         _direction.x = Input.GetAxisRaw("Horizontal");
         _direction.y = Input.GetAxisRaw("Vertical");
+
+        if (_player.demonMeter <= 0)
+        {
+            SceneManager.LoadScene("GameOver");
+        }
     }
 
     private void FixedUpdate()
@@ -25,7 +31,7 @@ public class PlayerMove : MonoBehaviour
         _rb.MovePosition(_rb.position + _direction * speed * Time.fixedDeltaTime);
 
         // Deplete demon meter every step
-        if ((_direction.x != 0 || _direction.y != 0) && _player.demonMeter > 0)
+        if (_direction.x != 0 || _direction.y != 0)
         {
             _player.demonMeter -= _player.demonMeterDepletionRate * Time.fixedDeltaTime;
             _player.UpdateDemonMeter();

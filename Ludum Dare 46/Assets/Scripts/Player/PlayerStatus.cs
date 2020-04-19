@@ -39,4 +39,22 @@ public static class PlayerStatus
     public static EnemyType FightingWith { get; set; }
 
     public static Dictionary<EnemyType, int> EncountersWith { get; set; }
+
+    public static void Reset()
+    {
+        MaxVitality = 100;
+        Vitality = 100;
+        MaxDemonMeter = 360;
+        DemonMeter = 180;
+        DemonMeterDepletionRate = 10;
+        Attack = 6;
+        ExtraDamage = 4;
+        CriticalHitChance = 1;
+        CriticalHitMultiplier = 3;
+        EvadeChance = 0;
+        IsPoisoned = false;
+        BodyParts = null;
+        Traits = null;
+        EncountersWith = null;
+    }
 }

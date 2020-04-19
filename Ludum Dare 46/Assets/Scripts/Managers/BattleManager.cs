@@ -207,7 +207,10 @@ public class BattleManager : MonoBehaviour
 
         if (PlayerStatus.Traits.ContainsKey(BodyPartTrait.Poison))
         {
-            Instantiate(Resources.Load<GameObject>("Prefabs/Buttons/Poison"), buttonLayout.transform);
+            GameObject poisonButtonInstance = Instantiate(
+                Resources.Load<GameObject>("Prefabs/Buttons/PoisonButton"), buttonLayout.transform);
+
+            poisonButtonInstance.GetComponent<Button>().onClick.AddListener(delegate { Poison(); });
         }
 
         // TODO: Add more trait related actions
@@ -241,7 +244,7 @@ public class BattleManager : MonoBehaviour
         if (_enemy.IsPoisoned)
         {
             int poisonDamageToDeal = PlayerStatus.Traits[BodyPartTrait.Poison];
-            _enemy.TakeDamage(poisonDamageToDeal);
+            _enemy.TakeDamageAllBodyParts(poisonDamageToDeal);
 
             if (!_enemy.IsAlive)
             {

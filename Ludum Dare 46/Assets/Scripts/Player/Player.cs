@@ -62,6 +62,7 @@ public class Player : MonoBehaviour
         PlayerStatus.Vitality = vitality;
         PlayerStatus.DemonMeter = demonMeter;
         PlayerStatus.DemonMeterDepletionRate = demonMeterDepletionRate;
+        PlayerStatus.IsPoisoned = false;
         PlayerStatus.FightingWith = enemyType;
 
         foreach (BodyPartType bodyPart in PlayerStatus.BodyParts.Keys)

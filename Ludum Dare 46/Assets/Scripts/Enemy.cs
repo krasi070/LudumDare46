@@ -53,6 +53,22 @@ public class Enemy : MonoBehaviour
         return selectedBodyPart != null && selectedBodyPart.vitality <= 0;
     }
 
+    public bool TakeDamageAllBodyParts(int amount)
+    {
+        foreach (BodyPart bodyPart in bodyParts)
+        {
+            bodyPart.vitality -= amount;
+        }
+
+        if (selectedBodyPart != null)
+        {
+            bodyPartVitalitySlider.maxValue = selectedBodyPart.data.vitality;
+            bodyPartVitalitySlider.value = selectedBodyPart.vitality;
+        }
+
+        return selectedBodyPart != null && selectedBodyPart.vitality <= 0;
+    }
+
     public void UnselectBodyPart()
     {
         if (selectedBodyPart != null)

@@ -16,4 +16,6 @@ MonoBehaviour:
   type: 02000000
   sprite: {fileID: 0}
   vitality: 50
+  consumptionAmount: 20
+  attachAmount: 35
   traits: 05000000

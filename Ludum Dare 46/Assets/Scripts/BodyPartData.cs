@@ -7,5 +7,7 @@ public class BodyPartData : ScriptableObject
     public BodyPartType[] type;
     public Sprite sprite;
     public int vitality;
+    public int consumptionAmount;
+    public int attachAmount;
     public BodyPartTrait[] traits;
 }

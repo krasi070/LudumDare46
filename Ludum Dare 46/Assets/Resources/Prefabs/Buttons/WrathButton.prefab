@@ -168,6 +168,7 @@ GameObject:
   - component: {fileID: 7826574646184315870}
   - component: {fileID: 6566178222263224892}
   - component: {fileID: 6186565281577517766}
+  - component: {fileID: 3474170971874678188}
   m_Layer: 5
   m_Name: WrathButton
   m_TagString: Untagged
@@ -300,3 +301,16 @@ MonoBehaviour:
   m_EffectColor: {r: 0.11320752, g: 0.04218582, b: 0.04218582, a: 1}
   m_EffectDistance: {x: 5, y: -5}
   m_UseGraphicAlpha: 1
+--- !u!114 &3474170971874678188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5271260610693042321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1110c23794f88de4ea4d2c54434c4081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: Spend a small amount of demon life to deal 1.5 times damage.

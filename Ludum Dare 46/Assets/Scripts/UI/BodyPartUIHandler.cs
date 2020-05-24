@@ -2,8 +2,7 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class BodyPartUIHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
-    IPointerClickHandler, IDragHandler, IEndDragHandler
+public class BodyPartUIHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public BodyPartData data;
     public BodyPartType type;
@@ -22,7 +21,6 @@ public class BodyPartUIHandler : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         _selectImage.enabled = true;
         _demonUIHandler.ShowBodyPartData(data);
-
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -61,16 +59,6 @@ public class BodyPartUIHandler : MonoBehaviour, IPointerEnterHandler, IPointerEx
             _demonUIHandler.selectedBodyPart = null;
             _selected = false;
         }
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        transform.position = Input.mousePosition;
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        transform.position = _demonUIHandler.BodyPartPositions[type];
     }
 
     private void Unselect()

@@ -22,16 +22,19 @@ public class DemonUIHandler : MonoBehaviour
 
         BodyPartType[] bodyParts = (BodyPartType[])Enum.GetValues(typeof(BodyPartType));
 
-        foreach (BodyPartType bodyPart in bodyParts)
-        {
-            BodyPartPositions.Add(bodyPart, GameObject.Find($"{bodyPartPositions.name}/{bodyPart.ToString()}").transform.position);
-        }
+        // Uncomment when the body part prefabs are done
+        //
+        // foreach (BodyPartType bodyPart in bodyParts)
+        // {
+        //     BodyPartPositions.Add(bodyPart, GameObject.Find($"{bodyPartPositions.name}/{bodyPart.ToString()}").transform.position);
+        // }
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
+            PlayerStatus.IsPaused = !PlayerStatus.IsPaused;
             demonMenu.SetActive(!demonMenu.activeSelf);
             Cursor.visible = demonMenu.activeSelf;
         }
@@ -46,7 +49,7 @@ public class DemonUIHandler : MonoBehaviour
             traitsTextMesh.text += $"* {trait.ToString()}\n";
         }
 
-        consumeButton.GetComponentInChildren<TextMeshProUGUI>().text = $"Consume for {data.consumptionAmount} Demon Life";
+        consumeButton.GetComponentInChildren<TextMeshProUGUI>().text = $"Consume {data.consumptionAmount}";
 
         traitsTextMesh.gameObject.SetActive(true);
         consumeButton.gameObject.SetActive(true);

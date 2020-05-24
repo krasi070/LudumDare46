@@ -1,15 +1,19 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
     public int vitality;
-    public float demonMeter;
+    public float demonLife;
     public float demonMeterDepletionRate;
 
-    public Slider demonMeterSlider;
+    public TextMeshProUGUI demonLifeText;
+
+    [HideInInspector]
+    public bool isMoving;
 
     private void Awake()
     {
@@ -21,9 +25,10 @@ public class Player : MonoBehaviour
         }
 
         vitality = PlayerStatus.Vitality;
-        demonMeter = PlayerStatus.DemonMeter;
+        demonLife = PlayerStatus.DemonMeter;
         demonMeterDepletionRate = PlayerStatus.DemonMeterDepletionRate;
         UpdateDemonMeter();
+        StartCoroutine(HeartBeatEffect());
     }
 
     private void Start()
@@ -52,15 +57,13 @@ public class Player : MonoBehaviour
 
     public void UpdateDemonMeter()
     {
-        demonMeterSlider.maxValue = PlayerStatus.MaxDemonMeter;
-        demonMeterSlider.value = demonMeter;
-
+        demonLifeText.text = $"{Mathf.FloorToInt(demonLife)}";
     }
 
     public void PrepareForEncounter(EnemyType enemyType)
     {
         PlayerStatus.Vitality = vitality;
-        PlayerStatus.DemonMeter = demonMeter;
+        PlayerStatus.DemonMeter = demonLife;
         PlayerStatus.DemonMeterDepletionRate = demonMeterDepletionRate;
         PlayerStatus.IsPoisoned = false;
         PlayerStatus.FightingWith = enemyType;
@@ -77,5 +80,58 @@ public class Player : MonoBehaviour
                 PlayerStatus.Traits[trait]++;
             }
         }
+    }
+
+    public void ExecuteBloodDropletEffect()
+    {
+        StartCoroutine(BloodDropletEffect());
+    }
+
+    private IEnumerator HeartBeatEffect()
+    {
+        int speed = 20;
+        float originalFontSize = demonLifeText.fontSize;
+        float increaseTo = demonLifeText.fontSize;
+        float multiplier = 2f;
+        float amount = 0;
+
+        while (true)
+        {
+            if (isMoving)
+            {
+                amount = (amount + speed * Time.deltaTime) % Mathf.PI;
+                demonLifeText.fontSize = originalFontSize + multiplier * Mathf.Sin(amount);
+            }
+            else
+            {
+                demonLifeText.fontSize = originalFontSize;
+                amount = 0;
+            }
+
+            yield return null;
+        }
+    }
+
+    private IEnumerator BloodDropletEffect()
+    {
+        GameObject textInstance = Instantiate(Resources.Load<GameObject>("Prefabs/Text/BloodDropletText"), demonLifeText.transform);
+        TextMeshProUGUI text = textInstance.GetComponent<TextMeshProUGUI>();
+        RectTransform rect = textInstance.GetComponent<RectTransform>();
+
+        int alphaSpeed = 2;
+        int movementSpeed = 150;
+        float alpha = 1;
+
+        while (text.color.a > 0)
+        {
+            alpha = Mathf.Clamp(alpha - alphaSpeed * Time.deltaTime, 0f, 1f);
+            text.color = new Color(text.color.r, text.color.g, text.color.b, alpha);
+
+            rect.anchoredPosition -= new Vector2(0f, movementSpeed * Time.deltaTime);
+
+            yield return null;
+        }
+
+        Destroy(textInstance);
     }
 }

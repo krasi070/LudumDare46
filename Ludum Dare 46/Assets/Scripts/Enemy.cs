@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class Enemy : MonoBehaviour
@@ -11,8 +11,7 @@ public class Enemy : MonoBehaviour
     public BodyPart[] bodyParts;
     public BodyPart selectedBodyPart;
 
-    public TextMeshProUGUI bodyPartNameUi;
-    public Slider bodyPartVitalitySlider;
+    public TextMeshProUGUI uiText;
 
     public bool IsAlive
     {
@@ -40,20 +39,9 @@ public class Enemy : MonoBehaviour
     {
         // TODO: Implement enemy AI
         PlayerStatus.Vitality -= 10;
+        AudioManager.instance.Play("TreeAttack", true);
 
         return $"{name} attacks you for 10 damage.";
-    }
-
-    public bool TakeDamage(int amount)
-    {
-        if (selectedBodyPart != null)
-        {
-            selectedBodyPart.vitality -= amount;
-            bodyPartVitalitySlider.maxValue = selectedBodyPart.data.vitality;
-            bodyPartVitalitySlider.value = selectedBodyPart.vitality;
-        }
-
-        return selectedBodyPart != null && selectedBodyPart.vitality <= 0;
     }
 
     public bool TakeDamageAllBodyParts(int amount)
@@ -65,8 +53,7 @@ public class Enemy : MonoBehaviour
 
         if (selectedBodyPart != null)
         {
-            bodyPartVitalitySlider.maxValue = selectedBodyPart.data.vitality;
-            bodyPartVitalitySlider.value = selectedBodyPart.vitality;
+            uiText.text = $"{selectedBodyPart.data.name} {selectedBodyPart.vitality}";
         }
 
         return selectedBodyPart != null && selectedBodyPart.vitality <= 0;
@@ -94,29 +81,32 @@ public class Enemy : MonoBehaviour
 
     public void ShowBodyPartUi(BodyPart bodyPart)
     {
-        bodyPartNameUi.text = bodyPart.data.name;
-        bodyPartNameUi.gameObject.SetActive(true);
-
-        bodyPartVitalitySlider.maxValue = bodyPart.data.vitality;
-        bodyPartVitalitySlider.value = bodyPart.vitality;
-        bodyPartVitalitySlider.gameObject.SetActive(true);
+        uiText.text = $"{bodyPart.data.name} {bodyPart.vitality}";
+        uiText.gameObject.SetActive(true);
     }
 
     private void SetTraits()
     {
         Traits = new Dictionary<BodyPartTrait, int>();
 
-        foreach (BodyPart bodyPart in bodyParts)
+        if (bodyParts != null)
         {
-            foreach (BodyPartTrait trait in bodyPart.data.traits)
+            foreach (BodyPart bodyPart in bodyParts)
             {
-                if (!Traits.ContainsKey(trait))
+                foreach (BodyPartTrait trait in bodyPart.data.traits)
                 {
-                    Traits.Add(trait, 0);
-                }
+                    if (!Traits.ContainsKey(trait))
+                    {
+                        Traits.Add(trait, 0);
+                    }
 
-                Traits[trait]++;
+                    Traits[trait]++;
+                }
             }
+        }
+        else
+        {
+            Debug.Log("Body parts are not set!");
         }
     }
 }

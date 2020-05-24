@@ -25,13 +25,23 @@ public class AudioManager : MonoBehaviour
         InitSounds();
     }
 
-    public void Play(string name)
+    public void Play(string name, bool varyVolume = false)
     {
         int index = GetSoundIndex(name);
 
         if (index >= 0)
         {
-            sounds[index].source.Play();
+            if (varyVolume)
+            {
+                float originalVolume = sounds[index].volume;
+                sounds[index].volume += Random.Range(-0.05f, 0.05f);
+                sounds[index].source.Play();
+                sounds[index].volume = originalVolume;
+            }
+            else
+            {
+                sounds[index].source.Play();
+            }
         }
     }
 

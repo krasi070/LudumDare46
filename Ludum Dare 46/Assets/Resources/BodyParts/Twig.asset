@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Twig
   m_EditorClassIdentifier: 
   name: Twig
-  type: 00000000010000000200000003000000
-  sprite: {fileID: 0}
+  type: 0000000001000000
+  sprite: {fileID: 6742676395581644718, guid: fcbb65c9bcced7a4fa856c75db84a03b, type: 3}
   vitality: 30
   consumptionAmount: 5
   attachAmount: 10
-  traits: 0600000007000000
+  traits: 090000000a000000

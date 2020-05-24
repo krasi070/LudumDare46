@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -6,8 +7,8 @@ using TMPro;
 
 public class BattleManager : MonoBehaviour
 {
-    public Slider playerVitalitySlider;
-    public Slider demonMeterSlider;
+    public TextMeshProUGUI playerVitalityText;
+    public TextMeshProUGUI demonMeterText;
     public GameObject buttonLayout;
     public TextMeshProUGUI info;
 
@@ -41,6 +42,10 @@ public class BattleManager : MonoBehaviour
         if (State == BattleState.Start)
         {
             State = BattleState.PlayerTurn;
+        }
+        else if (State == BattleState.Win)
+        {
+            State = BattleState.ChoiceMade;
         }
         else if (!PlayerStatus.IsAlive)
         {
@@ -86,7 +91,8 @@ public class BattleManager : MonoBehaviour
             // TODO: Give feedback to player that attack was critical
         }
 
-        _enemy.TakeDamage(damageToDeal);
+        AudioManager.instance.Play("Stab", true);
+        DamageEnemy(Mathf.CeilToInt(damageToDeal));
         UpdateState();
 
         if (isCriticalHit)
@@ -137,7 +143,7 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        _enemy.TakeDamage(damageToDeal);
+        DamageEnemy(Mathf.CeilToInt(damageToDeal));
         UpdateState();
 
         if (isCriticalHit)
@@ -185,6 +191,7 @@ public class BattleManager : MonoBehaviour
         }
 
         PlayerStatus.DemonMeter -= amountRequired;
+        StartCoroutine(DemonLifeDamageEffect());
         UpdatePlayerUi();
         float damageToDeal = (PlayerStatus.Attack + Random.Range(0, PlayerStatus.ExtraDamage + 1)) * 1.5f;
         bool isCriticalHit = Random.Range(1, 101) <= PlayerStatus.CriticalHitChance;
@@ -194,7 +201,7 @@ public class BattleManager : MonoBehaviour
             damageToDeal *= PlayerStatus.CriticalHitMultiplier;
         }
 
-        _enemy.TakeDamage(Mathf.CeilToInt(damageToDeal));
+        DamageEnemy(Mathf.CeilToInt(damageToDeal));
         UpdateState();
 
         if (isCriticalHit)
@@ -225,15 +232,39 @@ public class BattleManager : MonoBehaviour
 
         if (State == BattleState.EnemyTurn)
         {
+            int playerVitality = PlayerStatus.Vitality;
             string attackInfo = _enemy.Act();
             ShowInfoText(attackInfo);
-            UpdatePlayerUi();
+
+            if (playerVitality > PlayerStatus.Vitality)
+            {
+                StartCoroutine(TextDamageEffect(
+                    playerVitalityText, 
+                    string.Empty, 
+                    PlayerStatus.Vitality.ToString(), 
+                    $" / {PlayerStatus.MaxVitality}"));
+            }
+            else
+            {
+                UpdatePlayerUi();
+            }
+            
             UpdateState();
         }
 
-        if (State == BattleState.Win)
+        if (State == BattleState.Win && !GetComponent<AddBodyPartChoice>().bodyPartPanel.activeSelf)
         {
-            SceneManager.LoadScene("Map");
+            _enemy.gameObject.SetActive(false);
+            DestroyButtons();
+            GetComponent<AddBodyPartChoice>().MakeChoice(_enemy.selectedBodyPart.data);
+            ShowActionButtons();
+        }
+
+        if (State == BattleState.ChoiceMade)
+        {
+            buttonLayout.transform.parent.gameObject.SetActive(true);
+            UpdatePlayerUi();
+            ShowInfoText("On to the next one...");
         }
 
         if (State == BattleState.Lose)
@@ -266,23 +297,34 @@ public class BattleManager : MonoBehaviour
         }
 
         string enemyName = enemyNames[Random.Range(0, enemyNames.Count)];
-        GameObject enemyInstance = Instantiate(
-            Resources.Load<GameObject>($"Prefabs/{PlayerStatus.FightingWith}s/{enemyName}"), 
-            Vector3.zero, 
-            Quaternion.identity);
+        GameObject enemyInstance = Instantiate(Resources.Load<GameObject>($"Prefabs/{PlayerStatus.FightingWith}s/{enemyName}"));
         _enemy = enemyInstance.GetComponent<Enemy>();
     }
 
     private void SetUpPlayer()
     {
         UpdatePlayerUi();
+        DestroyButtons();
 
+        // Stab
+        GameObject stabButtonInstance = Instantiate(
+                Resources.Load<GameObject>("Prefabs/Buttons/StabButton"), buttonLayout.transform);
+
+        stabButtonInstance.GetComponentInChildren<Button>().onClick.AddListener(delegate { Stab(); });
+
+        // Wrath
+        GameObject wrathButtonInstance = Instantiate(
+                Resources.Load<GameObject>("Prefabs/Buttons/WrathButton"), buttonLayout.transform);
+
+        wrathButtonInstance.GetComponentInChildren<Button>().onClick.AddListener(delegate { Wrath(); });
+
+        // Poison
         if (PlayerStatus.Traits.ContainsKey(BodyPartTrait.Poison))
         {
             GameObject poisonButtonInstance = Instantiate(
                 Resources.Load<GameObject>("Prefabs/Buttons/PoisonButton"), buttonLayout.transform);
 
-            poisonButtonInstance.GetComponent<Button>().onClick.AddListener(delegate { Poison(); });
+            poisonButtonInstance.GetComponentInChildren<Button>().onClick.AddListener(delegate { Poison(); });
         }
 
         // TODO: Add more trait related actions
@@ -290,11 +332,16 @@ public class BattleManager : MonoBehaviour
 
     private void UpdatePlayerUi()
     {
-        playerVitalitySlider.maxValue = PlayerStatus.MaxVitality;
-        playerVitalitySlider.value = PlayerStatus.Vitality;
+        playerVitalityText.text = $"{PlayerStatus.Vitality} / {PlayerStatus.MaxVitality}";
+        demonMeterText.text = $"{Mathf.FloorToInt(PlayerStatus.DemonMeter)}";
+    }
 
-        demonMeterSlider.maxValue = PlayerStatus.MaxDemonMeter;
-        demonMeterSlider.value = PlayerStatus.DemonMeter;
+    private void DestroyButtons()
+    {
+        foreach (Transform button in buttonLayout.transform)
+        {
+            Destroy(button.gameObject);
+        }
     }
 
     private void ShowInfoText(string text)
@@ -338,5 +385,73 @@ public class BattleManager : MonoBehaviour
                 State = BattleState.Lose;
             }
         }
+    }
+
+    private void DamageEnemy(int amount)
+    {
+        if (_enemy.selectedBodyPart != null)
+        {
+            _enemy.selectedBodyPart.vitality -= amount;
+            StartCoroutine(TextDamageEffect(
+                _enemy.uiText, 
+                $"{_enemy.selectedBodyPart.data.name} ", 
+                _enemy.selectedBodyPart.vitality.ToString()));
+        }
+    }
+
+    private IEnumerator DemonLifeDamageEffect()
+    {
+        float originalfontSize = demonMeterText.fontSize;
+        float currFontSize = originalfontSize;
+        float increaseTo = originalfontSize * 1.5f;
+        float increaseRate = 100f;
+        bool increasing = true;
+
+        while (increasing || currFontSize != originalfontSize)
+        {
+            if (increasing)
+            {
+                currFontSize = Mathf.Clamp(currFontSize + increaseRate * Time.deltaTime, originalfontSize, increaseTo);
+                increasing = currFontSize < increaseTo;
+            }
+            else
+            {
+                currFontSize = Mathf.Clamp(currFontSize - increaseRate * Time.deltaTime, originalfontSize, increaseTo);
+            }
+
+            demonMeterText.text = $"<size={currFontSize}><color=#CA0909>{Mathf.FloorToInt(PlayerStatus.DemonMeter)}</color></size>";
+
+            yield return null;
+        }
+
+        demonMeterText.text = $"{Mathf.FloorToInt(PlayerStatus.DemonMeter)}";
+    }
+
+    private IEnumerator TextDamageEffect(TextMeshProUGUI textField, string beforeText, string redText, string afterText = "")
+    {
+        float originalfontSize = textField.fontSize;
+        float currFontSize = originalfontSize;
+        float increaseTo = originalfontSize * 1.5f;
+        float increaseRate = 100f;
+        bool increasing = true;
+
+        while (increasing || currFontSize != originalfontSize)
+        {
+            if (increasing)
+            {
+                currFontSize = Mathf.Clamp(currFontSize + increaseRate * Time.deltaTime, originalfontSize, increaseTo);
+                increasing = currFontSize < increaseTo;
+            }
+            else
+            {
+                currFontSize = Mathf.Clamp(currFontSize - increaseRate * Time.deltaTime, originalfontSize, increaseTo);
+            }
+
+            textField.text = $"{beforeText}<size={currFontSize}><color=#CA0909>{redText}</color></size>{afterText}";
+
+            yield return null;
+        }
+
+        textField.text = beforeText + redText + afterText;
     }
 }

@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b6e17ea9d174ab4f9ff68860e261ef3, type: 3}
+  m_Name: MoneyForArm_1
+  m_EditorClassIdentifier: 
+  dialogue:
+  - id: 0
+    speech: What do you wnat from me?
+    options:
+    - text: Ask for their right arm
+      nextId: 1
+    - text: Ask for their left arm
+      nextId: 1
+  - id: 1
+    speech: That sounds a bit unreasonable...
+    options:
+    - text: ...
+      nextId: 2
+  - id: 2
+    speech: 'How about we make a trade? '
+    options:
+    - text: Yes
+      nextId: 3
+    - text: No
+      nextId: 4
+  - id: 3
+    speech: Bring me 5 pennies and I'll give you my arm.
+    options:
+    - text: Agree
+      nextId: 5
+    - text: No. 3.
+      nextId: 6
+  - id: 4
+    speech: Then we are done talking.
+    options:
+    - text: (leave)
+      nextId: -1
+  - id: 5
+    speech: I am eagerly awaiting your return.
+    options:
+    - text: (leave)
+      nextId: -1
+  - id: 6
+    speech: 4
+    options:
+    - text: Agree
+      nextId: 5
+    - text: 2
+      nextId: 7
+  - id: 7
+    speech: You do remember that you are bargaining for my arm, right? 3 or nothing.
+    options:
+    - text: Agree
+      nextId: 8
+  - id: 8
+    speech: Better get me those pennies quick before I change my mind.
+    options:
+    - text: (leave)
+      nextId: -1
+  - id: 9
+    speech: Better get me those pennies quick before I change my mind.
+    options:
+    - text: (leave)
+      nextId: -1
+  memory:
+  - memory: 4
+    remember: 0
+  - memory: 3
+    remember: 0

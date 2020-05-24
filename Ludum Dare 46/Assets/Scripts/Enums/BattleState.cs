@@ -6,5 +6,6 @@
     EnemyTurn,
     EndEnemyTurn,
     Win,
+    ChoiceMade,
     Lose
 }

@@ -2,6 +2,8 @@
 
 public static class PlayerStatus
 {
+    public static bool IsPaused { get; set; }
+
     public static int MaxVitality { get; set; } = 100;
 
     public static int Vitality { get; set; } = 100;
@@ -10,7 +12,7 @@ public static class PlayerStatus
 
     public static float DemonMeter { get; set; } = 180;
 
-    public static float DemonMeterDepletionRate { get; set; } = 10;
+    public static float DemonMeterDepletionRate { get; set; } = 2;
 
     public static bool IsAlive
     {
@@ -46,7 +48,7 @@ public static class PlayerStatus
         Vitality = 100;
         MaxDemonMeter = 360;
         DemonMeter = 180;
-        DemonMeterDepletionRate = 10;
+        DemonMeterDepletionRate = 2;
         Attack = 6;
         ExtraDamage = 4;
         CriticalHitChance = 1;

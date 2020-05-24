@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Tree
+  - House
+  - Bush
+  - Human
+  - Rat
   layers:
   - Default
   - TransparentFX

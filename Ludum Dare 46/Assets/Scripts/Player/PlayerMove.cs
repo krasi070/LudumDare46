@@ -17,24 +17,36 @@ public class PlayerMove : MonoBehaviour
 
     private void Update()
     {
-        _direction.x = Input.GetAxisRaw("Horizontal");
-        _direction.y = Input.GetAxisRaw("Vertical");
-
-        if (_player.demonMeter <= 0)
+        if (!PlayerStatus.IsPaused)
         {
-            SceneManager.LoadScene("GameOver");
+            _direction.x = Input.GetAxisRaw("Horizontal");
+            _direction.y = Input.GetAxisRaw("Vertical");
+
+            if (_player.demonLife <= 0)
+            {
+                SceneManager.LoadScene("GameOver");
+            }
         }
     }
 
     private void FixedUpdate()
     {
         _rb.MovePosition(_rb.position + _direction * speed * Time.fixedDeltaTime);
+        _player.isMoving = _direction.x != 0 || _direction.y != 0;
 
         // Deplete demon meter every step
-        if (_direction.x != 0 || _direction.y != 0)
+        if (_player.isMoving)
         {
-            _player.demonMeter -= _player.demonMeterDepletionRate * Time.fixedDeltaTime;
+            _player.demonLife -= _player.demonMeterDepletionRate * Time.fixedDeltaTime;
+
+            int oldValue = int.Parse(_player.demonLifeText.text);
             _player.UpdateDemonMeter();
+            int newValue = int.Parse(_player.demonLifeText.text);
+
+            if (newValue < oldValue)
+            {
+                _player.ExecuteBloodDropletEffect();
+            }
         }
     }
 }

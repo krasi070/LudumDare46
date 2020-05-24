@@ -6,7 +6,6 @@ public class BodyPart : MonoBehaviour
     public int vitality;
 
     private bool _isSelected;
-    private SpriteRenderer _renderer;
     private Enemy _parent;
 
     public bool IsAlive
@@ -20,13 +19,12 @@ public class BodyPart : MonoBehaviour
     private void Start()
     {
         vitality = data.vitality;
-        _renderer = GetComponent<SpriteRenderer>();
         _parent = transform.parent.GetComponent<Enemy>();
     }
 
     private void OnMouseEnter()
     {
-        _renderer.enabled = true;
+        SetSelectBordersVisibility(true);
         _parent.ShowBodyPartUi(this);
     }
 
@@ -35,7 +33,7 @@ public class BodyPart : MonoBehaviour
         if (_isSelected)
         {
             _isSelected = false;
-            _renderer.color = Color.white;
+            SetSelectBordersVisibility(false, Color.black);
             _parent.selectedBodyPart = null;
         }
         else
@@ -48,15 +46,15 @@ public class BodyPart : MonoBehaviour
     {
         if (_parent.selectedBodyPart == null)
         {
-            _renderer.enabled = false;
-            _parent.bodyPartNameUi.gameObject.SetActive(false);
-            _parent.bodyPartVitalitySlider.gameObject.SetActive(false);
+            SetSelectBordersVisibility(false, Color.black);
+            _parent.uiText.gameObject.SetActive(false);
+            _parent.uiText.gameObject.SetActive(false);
 
             return;
         }
         else if (!_isSelected) 
         {
-            _renderer.enabled = false;
+            SetSelectBordersVisibility(false, Color.black);
         }
 
         _parent.ShowBodyPartUi();
@@ -65,7 +63,7 @@ public class BodyPart : MonoBehaviour
     public void Select()
     {
         _isSelected = true;
-        _renderer.color = new Color32(243, 198, 35, 255);
+        SetSelectBordersVisibility(true, new Color32(202, 9, 9, 255));
 
         if (_parent.selectedBodyPart != null)
         {
@@ -78,8 +76,26 @@ public class BodyPart : MonoBehaviour
     public void Unselect()
     {
         _isSelected = false;
-        _renderer.color = Color.white;
-        _renderer.enabled = false;
+        SetSelectBordersVisibility(false, Color.black);
         _parent.selectedBodyPart = null;
+    }
+
+    private void SetSelectBordersVisibility(bool isVisible)
+    {
+        foreach (Transform border in transform)
+        {
+            SpriteRenderer borderRenderer = border.GetComponent<SpriteRenderer>();
+            borderRenderer.enabled = isVisible;
+        }
+    }
+
+    private void SetSelectBordersVisibility(bool isVisible, Color color)
+    {
+        foreach (Transform border in transform)
+        {
+            SpriteRenderer borderRenderer = border.GetComponent<SpriteRenderer>();
+            borderRenderer.color = color;
+            borderRenderer.enabled = isVisible;
+        }
     }
 }

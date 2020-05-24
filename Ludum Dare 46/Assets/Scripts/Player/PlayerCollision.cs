@@ -11,7 +11,7 @@ public class PlayerCollision : MonoBehaviour
 
     private void Update()
     {
-        if (interactPrompt.gameObject.activeSelf && Input.GetAxis("Interact") > 0)
+        if (interactPrompt.gameObject.activeSelf && Input.GetAxis("Interact") > 0 && !PlayerStatus.IsPaused)
         {
             EnemyType fightingWith = (EnemyType)Enum.Parse(typeof(EnemyType), _collided.tag);
             GetComponent<Player>().PrepareForEncounter(fightingWith);

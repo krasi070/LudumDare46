@@ -9,6 +9,8 @@ TagManager:
   - Bush
   - Human
   - Rat
+  - Body Part
+  - Trait Text
   layers:
   - Default
   - TransparentFX

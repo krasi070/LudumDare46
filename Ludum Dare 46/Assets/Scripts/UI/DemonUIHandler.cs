@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -8,27 +7,12 @@ public class DemonUIHandler : MonoBehaviour
 {
     public GameObject demonMenu;
     public GameObject bodyPartPositions;
-    public TextMeshProUGUI traitsTextMesh;
-    public Button consumeButton;
+    public TextMeshProUGUI bodyPartNameTextMesh;
+    public GameObject infoPanel;
+    public GameObject consumeButton;
 
     [HideInInspector]
     public BodyPartUIHandler selectedBodyPart;
-
-    public Dictionary<BodyPartType, Vector3> BodyPartPositions { get; private set; }
-
-    private void Start()
-    {
-        BodyPartPositions = new Dictionary<BodyPartType, Vector3>();
-
-        BodyPartType[] bodyParts = (BodyPartType[])Enum.GetValues(typeof(BodyPartType));
-
-        // Uncomment when the body part prefabs are done
-        //
-        // foreach (BodyPartType bodyPart in bodyParts)
-        // {
-        //     BodyPartPositions.Add(bodyPart, GameObject.Find($"{bodyPartPositions.name}/{bodyPart.ToString()}").transform.position);
-        // }
-    }
 
     private void Update()
     {
@@ -36,28 +20,96 @@ public class DemonUIHandler : MonoBehaviour
         {
             PlayerStatus.IsPaused = !PlayerStatus.IsPaused;
             demonMenu.SetActive(!demonMenu.activeSelf);
+            HideBodyPartData();
+
+            if (demonMenu.activeSelf)
+            {
+                DestroyBodyParts();
+                LoadBodyParts();
+            }
+
             Cursor.visible = demonMenu.activeSelf;
         }
     }
 
     public void ShowBodyPartData(BodyPartData data)
     {
-        traitsTextMesh.text = $"{data.name}\n";
+        bodyPartNameTextMesh.text = $"{data.name}:";
 
-        foreach (BodyPartTrait trait in data.traits)
+        // Destroy old instances of trait texts
+        foreach (Transform child in infoPanel.transform)
         {
-            traitsTextMesh.text += $"* {trait.ToString()}\n";
+            if (child.tag == "Trait Text")
+            {
+                Destroy(child.gameObject);
+            }
         }
 
-        consumeButton.GetComponentInChildren<TextMeshProUGUI>().text = $"Consume {data.consumptionAmount}";
+        // Add current traits
+        foreach (BodyPartTrait trait in data.traits)
+        {
+            GameObject traitTextInstance = Instantiate(Resources.Load<GameObject>("Prefabs/Text/TraitText"), infoPanel.transform);
+            RectTransform rect = traitTextInstance.GetComponent<RectTransform>();
+            rect.sizeDelta = new Vector2(110, 30);
 
-        traitsTextMesh.gameObject.SetActive(true);
+            TextMeshProUGUI textMesh = traitTextInstance.GetComponent<TextMeshProUGUI>();
+            textMesh.fontSize = bodyPartNameTextMesh.fontSize;
+            textMesh.text = trait.ToString();
+
+            ActionText actionText = traitTextInstance.GetComponent<ActionText>();
+            actionText.description = TraitDescriptions.Get(trait);
+            actionText.text = trait.ToString();
+        }
+
+        // Modify consume button
+        consumeButton.GetComponentInChildren<TextMeshProUGUI>().text = $"Consume ({data.consumptionAmount})";
+        consumeButton.GetComponentInChildren<ActionButton>().description = $"Restore {data.consumptionAmount} Demon Life.";
+
+        infoPanel.SetActive(true);
         consumeButton.gameObject.SetActive(true);
     }
 
     public void HideBodyPartData()
     {
-        traitsTextMesh.gameObject.SetActive(false);
+        infoPanel.SetActive(false);
         consumeButton.gameObject.SetActive(false);
+    }
+
+    private void LoadBodyParts()
+    {
+        foreach (KeyValuePair<BodyPartType, BodyPartData> pair in PlayerStatus.BodyParts)
+        {
+            if (pair.Value != null)
+            {
+                int index = 0;
+
+                for (int i = 0; i < pair.Value.type.Length; i++)
+                {
+                    if (pair.Key == pair.Value.type[i])
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+
+                GameObject menuBodyPartInstance = Instantiate(pair.Value.demonMenuObject[index], demonMenu.transform);
+
+                foreach (Transform selectBorderCorner in menuBodyPartInstance.transform.GetChild(0))
+                {
+                    selectBorderCorner.GetComponent<Image>().enabled = false;
+                }
+            }
+        }
+    }
+
+    private void DestroyBodyParts()
+    {
+        foreach (Transform child in demonMenu.transform)
+        {
+            if (child.tag == "Body Part")
+            {
+                Destroy(child.gameObject);
+            }
+        }
     }
 }

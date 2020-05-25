@@ -8,18 +8,18 @@ public class BodyPartUIHandler : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public BodyPartType type;
 
     private bool _selected;
-    private Image _selectImage;
+    private Transform _selectBorder;
     private DemonUIHandler _demonUIHandler;
 
     private void Start()
     {
-        _selectImage = transform.GetChild(0).GetComponent<Image>();
+        _selectBorder = transform.GetChild(0);
         _demonUIHandler = GameObject.Find("DemonUIHandler").GetComponent<DemonUIHandler>();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        _selectImage.enabled = true;
+        SetSelectBordersVisibility(true, new Color32(202, 9, 9, 255));
         _demonUIHandler.ShowBodyPartData(data);
     }
 
@@ -27,14 +27,12 @@ public class BodyPartUIHandler : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         if (_demonUIHandler.selectedBodyPart == null)
         {
-            _selectImage.enabled = false;
-            _selectImage.color = Color.white;
+            SetSelectBordersVisibility(false, new Color32(202, 9, 9, 255));
             _demonUIHandler.HideBodyPartData();
         }
         else if (_demonUIHandler.selectedBodyPart != this)
         {
-            _selectImage.enabled = false;
-            _selectImage.color = Color.white;
+            SetSelectBordersVisibility(false, new Color32(202, 9, 9, 255));
             _demonUIHandler.ShowBodyPartData(_demonUIHandler.selectedBodyPart.data);
         }
     }
@@ -50,12 +48,12 @@ public class BodyPartUIHandler : MonoBehaviour, IPointerEnterHandler, IPointerEx
                 _demonUIHandler.selectedBodyPart.Unselect();
             }
 
-            _selectImage.color = new Color32(243, 198, 35, 255);
+            SetSelectBordersVisibility(true, new Color32(202, 9, 9, 255));
             _demonUIHandler.selectedBodyPart = this;
         }
         else
         {
-            _selectImage.color = Color.white;
+            SetSelectBordersVisibility(true, new Color32(202, 9, 9, 255));
             _demonUIHandler.selectedBodyPart = null;
             _selected = false;
         }
@@ -63,9 +61,27 @@ public class BodyPartUIHandler : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     private void Unselect()
     {
-        _selectImage.color = Color.white;
         _selected = false;
-        _selectImage.enabled = false;
+        SetSelectBordersVisibility(false, new Color32(202, 9, 9, 255));
         _demonUIHandler.selectedBodyPart = null;
+    }
+
+    private void SetSelectBordersVisibility(bool isVisible)
+    {
+        foreach (Transform border in _selectBorder)
+        {
+            Image borderImage = border.GetComponent<Image>();
+            borderImage.enabled = isVisible;
+        }
+    }
+
+    private void SetSelectBordersVisibility(bool isVisible, Color color)
+    {
+        foreach (Transform border in _selectBorder)
+        {
+            Image borderImage = border.GetComponent<Image>();
+            borderImage.color = color;
+            borderImage.enabled = isVisible;
+        }
     }
 }

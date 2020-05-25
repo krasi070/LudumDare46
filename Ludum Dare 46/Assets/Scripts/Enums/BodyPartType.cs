@@ -4,7 +4,6 @@
     RightArm,
     LeftLeg,
     RightLeg,
-    LeftEye,
-    RightEye,
+    Eyes,
     Tail
 }

@@ -15,6 +15,9 @@ MonoBehaviour:
   name: Twig
   type: 0000000001000000
   sprite: {fileID: 6742676395581644718, guid: fcbb65c9bcced7a4fa856c75db84a03b, type: 3}
+  demonMenuObject:
+  - {fileID: 924224254060697199, guid: 455ab1c2583e0394ca9a6bc62ff204b1, type: 3}
+  - {fileID: 6731425890161075030, guid: 0d4695130a998df46bbfdf6fa47a4cf5, type: 3}
   vitality: 30
   consumptionAmount: 5
   attachAmount: 10

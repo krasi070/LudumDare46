@@ -134,7 +134,7 @@ public class BattleManager : MonoBehaviour
         {
             foreach (BodyPartType type in _enemy.selectedBodyPart.data.type)
             {
-                if (type == BodyPartType.LeftEye || type == BodyPartType.RightEye)
+                if (type == BodyPartType.Eyes)
                 {
                     isEye = true;
                     damageToDeal *= 2;

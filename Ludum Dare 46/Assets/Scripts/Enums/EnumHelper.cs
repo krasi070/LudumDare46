@@ -12,10 +12,8 @@
                 return "Left Leg";
             case BodyPartType.RightLeg:
                 return "Right Leg";
-            case BodyPartType.LeftEye:
-                return "Left Eye";
-            case BodyPartType.RightEye:
-                return "Right Eye";
+            case BodyPartType.Eyes:
+                return "Eyes";
             case BodyPartType.Tail:
                 return "Tail";
             default:

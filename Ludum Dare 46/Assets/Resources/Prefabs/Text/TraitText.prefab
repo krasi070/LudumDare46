@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2329918333073873854}
   m_Layer: 5
   m_Name: TraitText
-  m_TagString: Untagged
+  m_TagString: Trait Text
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -42,17 +42,6 @@ public class Player : MonoBehaviour
         {
             PlayerStatus.Traits = new Dictionary<BodyPartTrait, int>();
         }
-
-        if (PlayerStatus.EncountersWith == null)
-        {
-            PlayerStatus.EncountersWith = new Dictionary<EnemyType, int>();
-            EnemyType[] enemyTypes = (EnemyType[])Enum.GetValues(typeof(EnemyType));
-
-            foreach (EnemyType type in enemyTypes)
-            {
-                PlayerStatus.EncountersWith.Add(type, 0);
-            }
-        }
     }
 
     public void UpdateDemonMeter()
@@ -60,13 +49,13 @@ public class Player : MonoBehaviour
         demonLifeText.text = $"{Mathf.FloorToInt(demonLife)}";
     }
 
-    public void PrepareForEncounter(EnemyType enemyType)
+    public void PrepareForEncounter(GameObject enemy)
     {
         PlayerStatus.Vitality = vitality;
         PlayerStatus.DemonMeter = demonLife;
         PlayerStatus.DemonMeterDepletionRate = demonMeterDepletionRate;
         PlayerStatus.IsPoisoned = false;
-        PlayerStatus.FightingWith = enemyType;
+        PlayerStatus.CurrentEnemy = enemy;
 
         foreach (BodyPartType bodyPart in PlayerStatus.BodyParts.Keys)
         {

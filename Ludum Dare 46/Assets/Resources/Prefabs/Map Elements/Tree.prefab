@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 6340662902533411740}
   - component: {fileID: 6340662902533411742}
   - component: {fileID: 6340662902533411743}
+  - component: {fileID: -8315464477862097989}
   m_Layer: 0
   m_Name: Tree
-  m_TagString: Tree
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,7 +101,7 @@ BoxCollider2D:
   m_Offset: {x: 0.60569346, y: -0.05}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0.13}
     oldSize: {x: 2.859375, y: 3.3398438}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
@@ -126,3 +127,21 @@ CircleCollider2D:
   m_Offset: {x: 0.66, y: -0.05}
   serializedVersion: 2
   m_Radius: 0.8
+--- !u!114 &-8315464477862097989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6340662902533411739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d2e56dba030ccf49943775c095dc682, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEnemy: 1
+  isSearchable: 0
+  interactionText: '[E] Attack'
+  defeatedText: It's dead.
+  enemyBattlePrefab: {fileID: 5455959872534111489, guid: 075f983db83eede438b733526a7fd89a,
+    type: 3}

@@ -11,6 +11,7 @@ TagManager:
   - Rat
   - Body Part
   - Trait Text
+  - Interactable
   layers:
   - Default
   - TransparentFX

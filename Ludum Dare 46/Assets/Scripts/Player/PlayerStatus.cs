@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 public static class PlayerStatus
 {
@@ -38,9 +39,7 @@ public static class PlayerStatus
 
     public static Dictionary<BodyPartTrait, int> Traits { get; set; }
 
-    public static EnemyType FightingWith { get; set; }
-
-    public static Dictionary<EnemyType, int> EncountersWith { get; set; }
+    public static GameObject CurrentEnemy { get; set; }
 
     public static void Reset()
     {
@@ -57,6 +56,6 @@ public static class PlayerStatus
         IsPoisoned = false;
         BodyParts = null;
         Traits = null;
-        EncountersWith = null;
+        CurrentEnemy = null;
     }
 }

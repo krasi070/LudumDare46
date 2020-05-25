@@ -27,7 +27,7 @@ public class BattleManager : MonoBehaviour
     {
         State = BattleState.Start;
         InitEnemiesTable();
-        SetRandomEnemy();
+        InitEnemy();
         SetUpPlayer();
         ShowInfoText($"Encountered {_enemy.name}! Steal a body part!");
     }
@@ -282,22 +282,9 @@ public class BattleManager : MonoBehaviour
         _enemiesTable[EnemyType.Tree].Add("Dead Sapling", 0);
     }
 
-    private void SetRandomEnemy()
+    private void InitEnemy()
     {
-        PlayerStatus.EncountersWith[PlayerStatus.FightingWith]++;
-
-        List<string> enemyNames = new List<string>();
-
-        foreach (string name in _enemiesTable[PlayerStatus.FightingWith].Keys)
-        {
-            if (_enemiesTable[PlayerStatus.FightingWith][name] < PlayerStatus.EncountersWith[PlayerStatus.FightingWith])
-            {
-                enemyNames.Add(name);
-            }
-        }
-
-        string enemyName = enemyNames[Random.Range(0, enemyNames.Count)];
-        GameObject enemyInstance = Instantiate(Resources.Load<GameObject>($"Prefabs/{PlayerStatus.FightingWith}s/{enemyName}"));
+        GameObject enemyInstance = Instantiate(PlayerStatus.CurrentEnemy);
         _enemy = enemyInstance.GetComponent<Enemy>();
     }
 

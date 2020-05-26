@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 948212fcb80ca9b42aa2e65449c63f0f, type: 3}
-  m_Name: Twig
+  m_Name: ArmTwig
   m_EditorClassIdentifier: 
-  name: Twig
-  type: 0000000001000000
+  name: Arm Twig
+  type: 0100000002000000
   sprite: {fileID: 6742676395581644718, guid: fcbb65c9bcced7a4fa856c75db84a03b, type: 3}
+  winScreenSize: {x: 100, y: 100}
   demonMenuObject:
-  - {fileID: 924224254060697199, guid: 455ab1c2583e0394ca9a6bc62ff204b1, type: 3}
-  - {fileID: 6731425890161075030, guid: 0d4695130a998df46bbfdf6fa47a4cf5, type: 3}
+  - {fileID: 368818251884566080, guid: 0d4695130a998df46bbfdf6fa47a4cf5, type: 3}
+  - {fileID: 134865827624749995, guid: 455ab1c2583e0394ca9a6bc62ff204b1, type: 3}
   vitality: 30
   consumptionAmount: 5
-  attachAmount: 10
   traits: 090000000a000000

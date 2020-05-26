@@ -1217,7 +1217,7 @@ GameObject:
   - component: {fileID: 5455959872534111488}
   - component: {fileID: 5455959872534111494}
   m_Layer: 0
-  m_Name: Dead Sapling
+  m_Name: DeadTree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1304,7 +1304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c98c9dca632e28d4883614d313059879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Dead Sapling
+  name: Dead Tree
   type: 2
   bodyParts:
   - {fileID: 5455959871909503626}

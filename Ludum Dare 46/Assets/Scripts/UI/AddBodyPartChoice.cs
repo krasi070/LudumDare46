@@ -12,7 +12,7 @@ public class AddBodyPartChoice : MonoBehaviour
     public void MakeChoice(BodyPartData bodyPart)
     {
         bodyPartPanel.SetActive(true);
-        bodyPartImage.sprite = bodyPart.sprite;
+        AddBodyPartSprite(bodyPart);
         AddInfo(bodyPart);
         AddButtons(bodyPart);
     }
@@ -44,6 +44,12 @@ public class AddBodyPartChoice : MonoBehaviour
         PlayerStatus.DemonMeter = Mathf.Min(PlayerStatus.DemonMeter + consumptionAmount, PlayerStatus.MaxDemonMeter);
         bodyPartPanel.SetActive(false);
         GetComponent<BattleManager>().UpdateState();
+    }
+
+    private void AddBodyPartSprite(BodyPartData bodyPart)
+    {
+        bodyPartImage.sprite = bodyPart.sprite;
+        bodyPartImage.GetComponent<RectTransform>().sizeDelta = bodyPart.winScreenSize;
     }
 
     private void AddInfo(BodyPartData bodyPart)

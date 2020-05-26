@@ -10,12 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 948212fcb80ca9b42aa2e65449c63f0f, type: 3}
-  m_Name: MaleLeftLeg
+  m_Name: Leg
   m_EditorClassIdentifier: 
-  name: Male Left Le
-  type: 02000000
-  sprite: {fileID: 0}
+  name: Leg
+  type: 0300000002000000
+  sprite: {fileID: -4919073202130127920, guid: fcbb65c9bcced7a4fa856c75db84a03b, type: 3}
+  winScreenSize: {x: 100, y: 100}
+  demonMenuObject:
+  - {fileID: 8534327962287771403, guid: 5ae99a5411a4919499c1f4bcb56d6f4d, type: 3}
+  - {fileID: 4509113151503464317, guid: d9d2cd7066ca24342b78940fe10c5680, type: 3}
   vitality: 50
   consumptionAmount: 20
-  attachAmount: 35
-  traits: 05000000
+  traits: 0800000008000000

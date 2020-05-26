@@ -10,12 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 948212fcb80ca9b42aa2e65449c63f0f, type: 3}
-  m_Name: Branch
+  m_Name: Arm
   m_EditorClassIdentifier: 
-  name: Branch
-  type: 00000000010000000200000003000000
-  sprite: {fileID: 0}
-  vitality: 80
+  name: Arm
+  type: 0100000000000000
+  sprite: {fileID: 974487868081046348, guid: fcbb65c9bcced7a4fa856c75db84a03b, type: 3}
+  winScreenSize: {x: 100, y: 80}
+  demonMenuObject:
+  - {fileID: 5748996532361284252, guid: 6d7c9947c6741754389a5645b39dcae9, type: 3}
+  - {fileID: 3402490206665102558, guid: cc14b1f8eed5d3445895db85a0157a69, type: 3}
+  vitality: 40
   consumptionAmount: 20
-  attachAmount: 20
-  traits: 000000000100000006000000
+  traits: 0000000008000000

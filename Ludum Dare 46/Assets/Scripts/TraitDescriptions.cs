@@ -8,7 +8,7 @@
                 return "Increase damage output (can stack).";
             case BodyPartTrait.Defense:
                 return "Decrease damage received (can stack).";
-            case BodyPartTrait.Claws:
+            case BodyPartTrait.Sharp:
                 return "Deal double damage to eyes.";
             case BodyPartTrait.Poison:
                 return "Add poison ability.";

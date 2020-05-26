@@ -8,12 +8,10 @@ public class BodyPartUIHandler : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public BodyPartType type;
 
     private bool _selected;
-    private Transform _selectBorder;
     private DemonUIHandler _demonUIHandler;
 
     private void Start()
     {
-        _selectBorder = transform.GetChild(0);
         _demonUIHandler = GameObject.Find("DemonUIHandler").GetComponent<DemonUIHandler>();
     }
 
@@ -68,7 +66,7 @@ public class BodyPartUIHandler : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     private void SetSelectBordersVisibility(bool isVisible)
     {
-        foreach (Transform border in _selectBorder)
+        foreach (Transform border in transform)
         {
             Image borderImage = border.GetComponent<Image>();
             borderImage.enabled = isVisible;
@@ -77,7 +75,7 @@ public class BodyPartUIHandler : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     private void SetSelectBordersVisibility(bool isVisible, Color color)
     {
-        foreach (Transform border in _selectBorder)
+        foreach (Transform border in transform)
         {
             Image borderImage = border.GetComponent<Image>();
             borderImage.color = color;

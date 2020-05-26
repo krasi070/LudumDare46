@@ -2,7 +2,7 @@
 {
     Strength,   // Increases damage dealt
     Defense,    // Increases defense
-    Claws,      // Increases damage dealt to eyes
+    Sharp,      // Increases damage dealt to eyes
     Poison,     // Poison attack
     Immunity,   // Poison immunity
     Lucky,      // Increase critical hit chance

@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 8804624729874252389}
   - component: {fileID: 8804624729874252388}
   - component: {fileID: 8804624729874252411}
+  - component: {fileID: 8804624728287314380}
   m_Layer: 0
   m_Name: Human
-  m_TagString: Human
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,7 +101,7 @@ BoxCollider2D:
   m_Offset: {x: 0.0036133528, y: 0.1556594}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0}
     oldSize: {x: 1.0820312, y: 2.0039062}
     newSize: {x: 1.0820312, y: 1.9882811}
     adaptiveTilingThreshold: 0.5
@@ -126,3 +127,21 @@ CircleCollider2D:
   m_Offset: {x: 0.04, y: 0.3}
   serializedVersion: 2
   m_Radius: 0.75
+--- !u!114 &8804624728287314380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8804624729874252391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d2e56dba030ccf49943775c095dc682, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEnemy: 1
+  isSearchable: 0
+  interactionText: '[E] Attack'
+  defeatedText: No backstabbing anymore.
+  enemyBattlePrefab: {fileID: 1437271135787409630, guid: 1980414f658e8cc4dbabaf8540a811ce,
+    type: 3}

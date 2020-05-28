@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -71,6 +70,12 @@ public class Player : MonoBehaviour
         }
     }
 
+    // These shouldn't be here...
+    public void AddDemonLife(int toAdd)
+    {
+        StartCoroutine(AddDemonLifeEffect(toAdd));
+    }
+
     public void ExecuteBloodDropletEffect()
     {
         StartCoroutine(BloodDropletEffect());
@@ -122,5 +127,21 @@ public class Player : MonoBehaviour
         }
 
         Destroy(textInstance);
+    }
+
+    private IEnumerator AddDemonLifeEffect(int toAdd)
+    {
+        int added = 0;
+
+        while (added < toAdd)
+        {
+            demonLifeText.text = $"{Mathf.FloorToInt(demonLife)}\n(+{toAdd - added})";
+            demonLife++;
+            added++;
+
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        demonLifeText.text = $"{Mathf.FloorToInt(demonLife)}";
     }
 }

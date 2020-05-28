@@ -18,7 +18,7 @@ public class BodyPartUIHandler : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public void OnPointerEnter(PointerEventData eventData)
     {
         SetSelectBordersVisibility(true, new Color32(202, 9, 9, 255));
-        _demonUIHandler.ShowBodyPartData(data);
+        _demonUIHandler.ShowBodyPartData(this);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -31,7 +31,7 @@ public class BodyPartUIHandler : MonoBehaviour, IPointerEnterHandler, IPointerEx
         else if (_demonUIHandler.selectedBodyPart != this)
         {
             SetSelectBordersVisibility(false, new Color32(202, 9, 9, 255));
-            _demonUIHandler.ShowBodyPartData(_demonUIHandler.selectedBodyPart.data);
+            _demonUIHandler.ShowBodyPartData(_demonUIHandler.selectedBodyPart);
         }
     }
 
@@ -55,6 +55,17 @@ public class BodyPartUIHandler : MonoBehaviour, IPointerEnterHandler, IPointerEx
             _demonUIHandler.selectedBodyPart = null;
             _selected = false;
         }
+    }
+
+    public void Consume()
+    {
+        Player player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        player.AddDemonLife(data.consumptionAmount);
+        PlayerStatus.BodyParts.Remove(type);
+
+        _demonUIHandler.HideBodyPartData();
+        Unselect();
+        Destroy(transform.parent.gameObject);
     }
 
     private void Unselect()

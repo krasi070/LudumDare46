@@ -11,6 +11,7 @@ public class BattleManager : MonoBehaviour
     public TextMeshProUGUI demonMeterText;
     public GameObject buttonLayout;
     public TextMeshProUGUI info;
+    public ShakeBehaviour cameraShake;
 
     private static Dictionary<EnemyType, Dictionary<string, int>> _enemiesTable; 
 
@@ -238,6 +239,7 @@ public class BattleManager : MonoBehaviour
 
             if (playerVitality > PlayerStatus.Vitality)
             {
+                cameraShake.TriggerShake();
                 StartCoroutine(TextDamageEffect(
                     playerVitalityText, 
                     string.Empty, 
@@ -379,10 +381,12 @@ public class BattleManager : MonoBehaviour
         if (_enemy.selectedBodyPart != null)
         {
             _enemy.selectedBodyPart.vitality -= amount;
+            _enemy.selectedBodyPart.ShowDamage(amount);
             StartCoroutine(TextDamageEffect(
                 _enemy.uiText, 
                 $"{_enemy.selectedBodyPart.data.name} ", 
                 _enemy.selectedBodyPart.vitality.ToString()));
+            _enemy.ShakeSprite();
         }
     }
 

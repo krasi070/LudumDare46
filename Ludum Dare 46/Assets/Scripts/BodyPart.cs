@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+using TMPro;
 
 public class BodyPart : MonoBehaviour
 {
@@ -7,6 +9,7 @@ public class BodyPart : MonoBehaviour
 
     private bool _isSelected;
     private Enemy _parent;
+    private TextMeshPro _damageTextMesh;
 
     public bool IsAlive
     {
@@ -20,6 +23,7 @@ public class BodyPart : MonoBehaviour
     {
         vitality = data.vitality;
         _parent = transform.parent.GetComponent<Enemy>();
+        _damageTextMesh = GetComponentInChildren<TextMeshPro>();
     }
 
     private void OnMouseEnter()
@@ -80,12 +84,21 @@ public class BodyPart : MonoBehaviour
         _parent.selectedBodyPart = null;
     }
 
+    public void ShowDamage(int damage)
+    {
+        StartCoroutine(MoveDamageText(damage));
+    }
+
     private void SetSelectBordersVisibility(bool isVisible)
     {
         foreach (Transform border in transform)
         {
             SpriteRenderer borderRenderer = border.GetComponent<SpriteRenderer>();
-            borderRenderer.enabled = isVisible;
+
+            if (borderRenderer != null)
+            {
+                borderRenderer.enabled = isVisible;
+            }
         }
     }
 
@@ -94,8 +107,44 @@ public class BodyPart : MonoBehaviour
         foreach (Transform border in transform)
         {
             SpriteRenderer borderRenderer = border.GetComponent<SpriteRenderer>();
-            borderRenderer.color = color;
-            borderRenderer.enabled = isVisible;
+
+            if (borderRenderer != null)
+            {
+                borderRenderer.color = color;
+                borderRenderer.enabled = isVisible;
+            }
         }
+    }
+
+    private IEnumerator MoveDamageText(int damage)
+    {
+        _damageTextMesh.text = $"-{damage}";
+        Vector3 originalPosition = _damageTextMesh.transform.position;
+        float duration = 0.3f;
+        float timer = 0f;
+        float alpha = 1f;
+        float speed = 2.5f;
+
+        _damageTextMesh.color = new Color(_damageTextMesh.color.r, _damageTextMesh.color.g, _damageTextMesh.color.b, alpha);
+
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            _damageTextMesh.transform.position += new Vector3(0f, speed * Time.deltaTime);
+
+            yield return null;
+        }
+
+        while (alpha > 0)
+        {
+            alpha = Mathf.Clamp(alpha - Time.deltaTime * speed * 2, 0f, 1f);
+            _damageTextMesh.transform.position += new Vector3(0f, speed * Time.deltaTime);
+            _damageTextMesh.color = new Color(_damageTextMesh.color.r, _damageTextMesh.color.g, _damageTextMesh.color.b, alpha);
+
+            yield return null;
+        }
+
+        _damageTextMesh.transform.position = originalPosition;
+        _damageTextMesh.color = new Color(_damageTextMesh.color.r, _damageTextMesh.color.g, _damageTextMesh.color.b, 0);
     }
 }

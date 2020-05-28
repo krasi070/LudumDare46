@@ -85,6 +85,11 @@ public class Enemy : MonoBehaviour
         uiText.gameObject.SetActive(true);
     }
 
+    public void ShakeSprite()
+    {
+        StartCoroutine(SpriteShakeEffect());
+    }
+
     private void SetTraits()
     {
         Traits = new Dictionary<BodyPartTrait, int>();
@@ -108,5 +113,28 @@ public class Enemy : MonoBehaviour
         {
             Debug.Log("Body parts are not set!");
         }
+    }
+
+    private IEnumerator SpriteShakeEffect()
+    {
+        Vector3 originalPosition = transform.position;
+        Vector3 originalTextPosition = uiText.transform.position;
+        float duration = 0.25f;
+        float timer = 0f;
+        float speed = 60f;
+        float multiplier = 0.075f;
+
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            Vector3 moveBy = new Vector3(Mathf.Sin(speed * timer) * multiplier, 0f);
+            transform.position = originalPosition + moveBy;
+            uiText.transform.position = originalTextPosition;
+
+            yield return null;
+        }
+
+        transform.position = originalPosition;
+        uiText.transform.position = originalTextPosition;
     }
 }

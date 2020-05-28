@@ -750,6 +750,7 @@ GameObject:
   - component: {fileID: 572945372}
   - component: {fileID: 572945374}
   - component: {fileID: 572945373}
+  - component: {fileID: 572945375}
   m_Layer: 0
   m_Name: BalckBarRight
   m_TagString: Untagged
@@ -813,6 +814,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 572945371}
   m_CullTransparentMesh: 0
+--- !u!225 &572945375
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 572945371}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &659213983
 GameObject:
   m_ObjectHideFlags: 0
@@ -2145,6 +2158,7 @@ GameObject:
   - component: {fileID: 1597096646}
   - component: {fileID: 1597096648}
   - component: {fileID: 1597096647}
+  - component: {fileID: 1597096649}
   m_Layer: 0
   m_Name: BalckBarLeft
   m_TagString: Untagged
@@ -2208,6 +2222,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1597096645}
   m_CullTransparentMesh: 0
+--- !u!225 &1597096649
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1597096645}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &1748558325
 GameObject:
   m_ObjectHideFlags: 0
@@ -2634,6 +2660,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8315464477862097989, guid: 11e5db1569cd48440a5d2701d7c22830,
+        type: 3}
+      propertyPath: enemyBattlePrefab
+      value: 
+      objectReference: {fileID: 5279904588476288150, guid: 0df893ad50acbec459ad465ed223e5a5,
+        type: 3}
     - target: {fileID: 6340662902533411739, guid: 11e5db1569cd48440a5d2701d7c22830,
         type: 3}
       propertyPath: m_Name

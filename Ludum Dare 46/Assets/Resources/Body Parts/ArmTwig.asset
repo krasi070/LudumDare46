@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ArmTwig
   m_EditorClassIdentifier: 
   name: Arm Twig
-  type: 0100000002000000
+  type: 0100000000000000
   sprite: {fileID: 6742676395581644718, guid: fcbb65c9bcced7a4fa856c75db84a03b, type: 3}
   winScreenSize: {x: 100, y: 100}
   demonMenuObject:

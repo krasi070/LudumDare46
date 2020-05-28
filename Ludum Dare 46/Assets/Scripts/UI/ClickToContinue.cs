@@ -22,7 +22,7 @@ public class ClickToContinue : MonoBehaviour, IPointerClickHandler
 
         if (_battleManager.State == BattleState.ChoiceMade)
         {
-            SceneManager.LoadScene("Map");
+            LevelManager.instance.LoadScene("Map");
         }
     }
 }

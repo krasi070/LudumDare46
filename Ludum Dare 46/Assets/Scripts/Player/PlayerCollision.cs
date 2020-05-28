@@ -19,7 +19,7 @@ public class PlayerCollision : MonoBehaviour
                     GetComponent<Player>().PrepareForEncounter(_collided.enemyBattlePrefab);
                     MapStatus.InteractedWith.Add(_collided.name);
                     MapStatus.Save();
-                    SceneManager.LoadScene("Battle");
+                    LevelManager.instance.LoadScene("Battle");
                 }
                 else if (_collided.isSearchable)
                 {

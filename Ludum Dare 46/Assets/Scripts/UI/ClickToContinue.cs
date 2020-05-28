@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 
 public class ClickToContinue : MonoBehaviour, IPointerClickHandler
 {
@@ -13,16 +12,20 @@ public class ClickToContinue : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (_battleManager.State == BattleState.EndPlayerTurn ||
-            _battleManager.State == BattleState.EndEnemyTurn ||
-            _battleManager.State == BattleState.Start)
+        switch (BattleManager.State)
         {
-            _battleManager.UpdateState();
-        }
-
-        if (_battleManager.State == BattleState.ChoiceMade)
-        {
-            LevelManager.instance.LoadScene("Map");
+            case BattleState.BattleStart:
+            case BattleState.StartPlayerTurn:
+            case BattleState.EndPlayerTurn:
+            case BattleState.StartEnemyTurn:
+            case BattleState.EndEnemyTurn:
+            case BattleState.Win:
+            case BattleState.Lose:
+                _battleManager.UpdateState();
+                break;
+            case BattleState.ChoiceMade:
+                LevelManager.instance.LoadScene("Map");
+                break;
         }
     }
 }

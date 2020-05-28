@@ -28,40 +28,49 @@ public class BodyPart : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        SetSelectBordersVisibility(true);
-        _parent.ShowBodyPartUi(this);
+        if (BattleManager.State == BattleState.PlayerTurn)
+        {
+            SetSelectBordersVisibility(true);
+            _parent.ShowBodyPartUi(this);
+        }
     }
 
     private void OnMouseDown()
     {
-        if (_isSelected)
+        if (BattleManager.State == BattleState.PlayerTurn)
         {
-            _isSelected = false;
-            SetSelectBordersVisibility(false, Color.black);
-            _parent.selectedBodyPart = null;
-        }
-        else
-        {
-            Select();
+            if (_isSelected)
+            {
+                _isSelected = false;
+                SetSelectBordersVisibility(false, Color.black);
+                _parent.selectedBodyPart = null;
+            }
+            else
+            {
+                Select();
+            }
         }
     }
 
     private void OnMouseExit()
     {
-        if (_parent.selectedBodyPart == null)
+        if (BattleManager.State == BattleState.PlayerTurn)
         {
-            SetSelectBordersVisibility(false, Color.black);
-            _parent.uiText.gameObject.SetActive(false);
-            _parent.uiText.gameObject.SetActive(false);
+            if (_parent.selectedBodyPart == null)
+            {
+                SetSelectBordersVisibility(false, Color.black);
+                _parent.uiText.gameObject.SetActive(false);
+                _parent.uiText.gameObject.SetActive(false);
 
-            return;
-        }
-        else if (!_isSelected) 
-        {
-            SetSelectBordersVisibility(false, Color.black);
-        }
+                return;
+            }
+            else if (!_isSelected)
+            {
+                SetSelectBordersVisibility(false, Color.black);
+            }
 
-        _parent.ShowBodyPartUi();
+            _parent.ShowBodyPartUi();
+        }
     }
 
     public void Select()

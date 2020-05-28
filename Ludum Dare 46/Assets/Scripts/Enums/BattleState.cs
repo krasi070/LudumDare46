@@ -1,8 +1,10 @@
 ﻿public enum BattleState
 {
-    Start,
+    BattleStart,
+    StartPlayerTurn,
     PlayerTurn,
     EndPlayerTurn,
+    StartEnemyTurn,
     EnemyTurn,
     EndEnemyTurn,
     Win,

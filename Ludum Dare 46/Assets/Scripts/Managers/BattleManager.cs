@@ -17,7 +17,7 @@ public class BattleManager : MonoBehaviour
 
     private Enemy _enemy;
 
-    public BattleState State { get; private set; }
+    public static BattleState State { get; private set; }
 
     private void Awake()
     {
@@ -26,7 +26,7 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
-        State = BattleState.Start;
+        State = BattleState.BattleStart;
         InitEnemiesTable();
         InitEnemy();
         SetUpPlayer();
@@ -40,39 +40,36 @@ public class BattleManager : MonoBehaviour
 
     public void UpdateState()
     {
-        if (State == BattleState.Start)
+        switch (State)
         {
-            State = BattleState.PlayerTurn;
-        }
-        else if (State == BattleState.Win)
-        {
-            State = BattleState.ChoiceMade;
-        }
-        else if (!PlayerStatus.IsAlive)
-        {
-            State = BattleState.Lose;
-        }
-        else if (!_enemy.IsAlive)
-        {
-            State = BattleState.Win;
-        }
-        else if (State == BattleState.PlayerTurn)
-        {
-            State = BattleState.EndPlayerTurn;
-        }
-        else if (State == BattleState.EndPlayerTurn)
-        {
-            State = BattleState.EnemyTurn;
-            StartEnemyTurnActions();
-        }
-        else if (State == BattleState.EnemyTurn)
-        {
-            State = BattleState.EndEnemyTurn;
-        }
-        else if (State == BattleState.EndEnemyTurn)
-        {
-            State = BattleState.PlayerTurn;
-            StartPlayerTurnActions();
+            case BattleState.BattleStart:
+                State = BattleState.PlayerTurn;
+                break;
+            case BattleState.StartPlayerTurn:
+                StartPlayerTurnActions();
+                break;
+            case BattleState.PlayerTurn:
+                State = BattleState.EndPlayerTurn;
+                break;
+            case BattleState.EndPlayerTurn:
+                EndPlayerTurnActions();
+                break;
+            case BattleState.StartEnemyTurn:
+                StartEnemyTurnActions();
+                break;
+            case BattleState.EnemyTurn:
+                State = BattleState.EndEnemyTurn;
+                break;
+            case BattleState.EndEnemyTurn:
+                EndEnemyTurnActions();
+                break;
+            case BattleState.Win:
+                State = BattleState.ChoiceMade;
+                break;
+            case BattleState.ChoiceMade:
+                break;
+            case BattleState.Lose:
+                break;
         }
     }
 
@@ -98,12 +95,14 @@ public class BattleManager : MonoBehaviour
 
         if (isCriticalHit)
         {
-            ShowInfoText($"Critical stab! {_enemy.name}'s {_enemy.selectedBodyPart.data.name.ToLower()} took {damageToDeal} damage!");
+            ShowInfoText($"Critical stab! {_enemy.name}'s {_enemy.selectedBodyPart.data.name.ToLower()} took <color=#CA0909>{damageToDeal}</color> damage!");
         }
         else
         {
-            ShowInfoText($"You stabbed {_enemy.name}'s {_enemy.selectedBodyPart.data.name.ToLower()} for {damageToDeal} damage!");
+            ShowInfoText($"You stabbed {_enemy.name}'s {_enemy.selectedBodyPart.data.name.ToLower()} for <color=#CA0909>{damageToDeal}</color> damage!");
         }
+
+        ShowTextIfEnemyIsDefeated();
     }
 
     /// <summary>
@@ -159,6 +158,8 @@ public class BattleManager : MonoBehaviour
         {
             ShowInfoText($"{_enemy.name}'s {_enemy.selectedBodyPart.data.name.ToLower()} for {damageToDeal} damage. Should've went for the eyes.");
         }
+
+        ShowTextIfEnemyIsDefeated();
     }
 
     /// <summary>
@@ -207,12 +208,14 @@ public class BattleManager : MonoBehaviour
 
         if (isCriticalHit)
         {
-            ShowInfoText($"Critical attack! {_enemy.name}'s {_enemy.selectedBodyPart.data.name.ToLower()} took {Mathf.CeilToInt(damageToDeal)} damage from your wrath!");
+            ShowInfoText($"Critical attack! {_enemy.name}'s {_enemy.selectedBodyPart.data.name.ToLower()} took <color=#CA0909>{Mathf.CeilToInt(damageToDeal)}</color> damage from your wrath!");
         }
         else
         {
-            ShowInfoText($"You used Wrath against {_enemy.name}'s {_enemy.selectedBodyPart.data.name.ToLower()}! Dealt {Mathf.CeilToInt(damageToDeal)} damage!");
+            ShowInfoText($"You used Wrath against {_enemy.name}'s {_enemy.selectedBodyPart.data.name.ToLower()}! Dealt <color=#CA0909>{Mathf.CeilToInt(damageToDeal)}</color> damage!");
         }
+
+        ShowTextIfEnemyIsDefeated();
     }
 
     // PLAYER ACTIONS END HERE
@@ -342,6 +345,11 @@ public class BattleManager : MonoBehaviour
         info.text = text;
     }
 
+    private void ConcatInfoText(string toConcat)
+    {
+        info.text += toConcat;
+    }
+
     private void ShowActionButtons()
     {
         buttonLayout.SetActive(true);
@@ -350,6 +358,13 @@ public class BattleManager : MonoBehaviour
 
     private void StartEnemyTurnActions()
     {
+        if (!_enemy.IsAlive)
+        {
+            State = BattleState.Win;
+
+            return;
+        }
+
         if (_enemy.IsPoisoned)
         {
             int poisonDamageToDeal = PlayerStatus.Traits[BodyPartTrait.Poison];
@@ -358,12 +373,23 @@ public class BattleManager : MonoBehaviour
             if (!_enemy.IsAlive)
             {
                 State = BattleState.Win;
+
+                return;
             }
         }
+
+        State = BattleState.EnemyTurn;
     }
 
     private void StartPlayerTurnActions()
     {
+        if (!PlayerStatus.IsAlive)
+        {
+            State = BattleState.Lose;
+
+            return;
+        }
+
         if (PlayerStatus.IsPoisoned)
         {
             int poisonDamageToDeal = _enemy.Traits[BodyPartTrait.Poison];
@@ -372,21 +398,45 @@ public class BattleManager : MonoBehaviour
             if (!PlayerStatus.IsAlive)
             {
                 State = BattleState.Lose;
+
+                return;
             }
         }
+
+        State = BattleState.PlayerTurn;
+    }
+
+    private void EndEnemyTurnActions()
+    {
+        State = BattleState.StartPlayerTurn;
+        UpdateState();
+    }
+
+    private void EndPlayerTurnActions()
+    {
+        State = BattleState.StartEnemyTurn;
+        UpdateState();
     }
 
     private void DamageEnemy(int amount)
     {
         if (_enemy.selectedBodyPart != null)
         {
-            _enemy.selectedBodyPart.vitality -= amount;
+            _enemy.selectedBodyPart.vitality = Mathf.Max(_enemy.selectedBodyPart.vitality - amount, 0);
             _enemy.selectedBodyPart.ShowDamage(amount);
             StartCoroutine(TextDamageEffect(
                 _enemy.uiText, 
                 $"{_enemy.selectedBodyPart.data.name} ", 
                 _enemy.selectedBodyPart.vitality.ToString()));
             _enemy.ShakeSprite();
+        }
+    }
+
+    private void ShowTextIfEnemyIsDefeated()
+    {
+        if (!_enemy.IsAlive)
+        {
+            ConcatInfoText($"\nSuccessfully stole {_enemy.name}'s {_enemy.selectedBodyPart.data.name}. Where do you want to attach it?");
         }
     }
 

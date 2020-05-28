@@ -38,10 +38,16 @@ public class Enemy : MonoBehaviour
     public string Act()
     {
         // TODO: Implement enemy AI
-        PlayerStatus.Vitality -= 10;
+        int randomDamage = Random.Range(1, 13);
+        PlayerStatus.Vitality -= randomDamage;
         AudioManager.instance.Play("TreeAttack", true);
 
-        return $"{name} attacks you for 10 damage.";
+        if (!PlayerStatus.IsAlive)
+        {
+            return $"{name} attacks you for <color=#CA0909>{randomDamage}</color> damage.\n<color=#CA0909>LETHAL BLOW!</color>";
+        }
+
+        return $"{name} attacks you for <color=#CA0909>{randomDamage}</color> damage.";
     }
 
     public bool TakeDamageAllBodyParts(int amount)

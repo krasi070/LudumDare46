@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -14,18 +15,24 @@ public class DemonUIHandler : MonoBehaviour
     [HideInInspector]
     public BodyPartUIHandler selectedBodyPart;
 
+    private bool _moving = false;
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q) && !_moving)
         {
             PlayerStatus.IsPaused = !PlayerStatus.IsPaused;
-            demonMenu.SetActive(!demonMenu.activeSelf);
             HideBodyPartData();
 
-            if (demonMenu.activeSelf)
+            if (PlayerStatus.IsPaused)
             {
                 DestroyBodyParts();
                 LoadBodyParts();
+                StartCoroutine(Move(1));
+            }
+            else
+            {
+                StartCoroutine(Move(-1));
             }
 
             Cursor.visible = demonMenu.activeSelf;
@@ -118,5 +125,30 @@ public class DemonUIHandler : MonoBehaviour
                 Destroy(child.gameObject);
             }
         }
+    }
+
+    private IEnumerator Move(int direction)
+    {
+        _moving = true;
+        RectTransform rectTransform = demonMenu.GetComponent<RectTransform>();
+
+        float duration = 0.15f;
+        float timer = 0f;
+
+        Vector3 startingPosition = rectTransform.localPosition;
+        Vector3 destination = direction > 0 ? Vector3.zero : new Vector3(0, -420);
+
+        while ((rectTransform.localPosition - destination).sqrMagnitude != 0)
+        {
+            timer = Mathf.Clamp(timer + Time.deltaTime, 0f, duration);
+            float multiplier = timer / duration;
+            rectTransform.localPosition = 
+                new Vector3(0, startingPosition.y + direction * Mathf.Abs(startingPosition.y - destination.y) * multiplier);
+
+            yield return null;
+        }
+
+        rectTransform.localPosition = destination;
+        _moving = false;
     }
 }

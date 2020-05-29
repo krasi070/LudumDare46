@@ -15,7 +15,14 @@ public class DemonUIHandler : MonoBehaviour
     [HideInInspector]
     public BodyPartUIHandler selectedBodyPart;
 
+    private Vector3 _hiddenPosition = new Vector3(0, -420);
+    private Vector3 _visiblePosition = Vector3.zero;
     private bool _moving = false;
+
+    private void Awake()
+    {
+        demonMenu.transform.position = _hiddenPosition;
+    }
 
     private void Update()
     {
@@ -136,7 +143,7 @@ public class DemonUIHandler : MonoBehaviour
         float timer = 0f;
 
         Vector3 startingPosition = rectTransform.localPosition;
-        Vector3 destination = direction > 0 ? Vector3.zero : new Vector3(0, -420);
+        Vector3 destination = direction > 0 ? _visiblePosition : _hiddenPosition;
 
         while ((rectTransform.localPosition - destination).sqrMagnitude != 0)
         {

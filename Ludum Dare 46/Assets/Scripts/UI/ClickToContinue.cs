@@ -19,8 +19,6 @@ public class ClickToContinue : MonoBehaviour, IPointerClickHandler
             case BattleState.EndPlayerTurn:
             case BattleState.StartEnemyTurn:
             case BattleState.EndEnemyTurn:
-            case BattleState.Win:
-            case BattleState.Lose:
                 _battleManager.UpdateState();
                 break;
             case BattleState.ChoiceMade:

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 948212fcb80ca9b42aa2e65449c63f0f, type: 3}
+  m_Name: LegTwig
+  m_EditorClassIdentifier: 
+  name: Leg Twig
+  type: 0300000002000000
+  sprite: {fileID: -9037381587572429311, guid: fcbb65c9bcced7a4fa856c75db84a03b, type: 3}
+  winScreenSize: {x: 80, y: 100}
+  demonMenuObject:
+  - {fileID: 948592172843855592, guid: e737ffd12fa744b4f803a77356c348b2, type: 3}
+  - {fileID: 7983495679899284095, guid: dc6c82b36b2c9e54a8d20500d8017b4e, type: 3}
+  vitality: 35
+  consumptionAmount: 8
+  traits: 0500000009000000

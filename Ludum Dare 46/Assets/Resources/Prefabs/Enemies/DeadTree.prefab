@@ -567,7 +567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6856ea16dad4ab04da9fe5e80aee046b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: b089f7b780f233246ab6362e78ef4c79, type: 2}
+  data: {fileID: 11400000, guid: ed30184c8137ffb4ea6c0ed71e700a52, type: 2}
   vitality: 20
 --- !u!1 &1657250171960583529
 GameObject:

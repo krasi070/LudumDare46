@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
@@ -7,7 +8,14 @@ public class AddBodyPartChoice : MonoBehaviour
     public GameObject bodyPartPanel;
     public GameObject bodyPartInfo;
     public GameObject buttonLayout;
+
+    public Image bodyPartBackground;
     public Image bodyPartImage;
+
+    private void Awake()
+    {
+        bodyPartPanel.SetActive(false);
+    }
 
     public void MakeChoice(BodyPartData bodyPart)
     {
@@ -15,6 +23,8 @@ public class AddBodyPartChoice : MonoBehaviour
         AddBodyPartSprite(bodyPart);
         AddInfo(bodyPart);
         AddButtons(bodyPart);
+        StartCoroutine(AnimateBodyPartImage());
+        StartCoroutine(RotateBodyPartBacgroundImage());
     }
 
     public void ReplaceBodyPart(BodyPartData bodyPart, BodyPartType placeToBeReplaced)
@@ -133,5 +143,51 @@ public class AddBodyPartChoice : MonoBehaviour
         ActionButton actionButton = consumeButtonInstance.transform.GetChild(0).gameObject.AddComponent<ActionButton>();
         actionButton.tiltDegrees = -3f;
         actionButton.description = $"Restore {bodyPart.consumptionAmount} Demon Life.";
+    }
+
+    private IEnumerator RotateBodyPartBacgroundImage()
+    {
+        RectTransform rectTransformBg = bodyPartBackground.GetComponent<RectTransform>();
+        RectTransform rectTransformBodyPartImage = bodyPartImage.GetComponent<RectTransform>();
+        float increment = 32f;
+        float timeUntilNexRotation = 0.6f;
+        float timer = 0f;
+
+        while (bodyPartPanel.activeSelf)
+        {
+            timer += Time.deltaTime;
+
+            if (timer >= timeUntilNexRotation)
+            {
+                timer = 0f;
+                Vector3 eulers = new Vector3(0, 0, (rectTransformBg.localRotation.z + increment) % 360);
+                rectTransformBg.Rotate(eulers);
+                rectTransformBodyPartImage.Rotate(-eulers);
+            }
+
+            yield return null;
+        }
+    }
+
+    private IEnumerator AnimateBodyPartImage()
+    {
+        RectTransform rectTransform = bodyPartImage.GetComponent<RectTransform>();
+        Vector2 originalSize = rectTransform.sizeDelta;
+        float relativeY = originalSize.y / originalSize.x;
+        float multiplier = 1.5f;
+        float speed = 8f;
+        float sinValue = 0f;
+
+        while (bodyPartPanel.activeSelf)
+        {
+            sinValue += Time.deltaTime * speed;
+            float sizeDistortionAmount = Mathf.Sin(sinValue) * multiplier;
+            Vector2 sizeDistortionVector = new Vector2(sizeDistortionAmount, sizeDistortionAmount * relativeY);
+            rectTransform.sizeDelta = originalSize + sizeDistortionVector;
+
+            yield return null;
+        }
+
+        rectTransform.sizeDelta = originalSize;
     }
 }

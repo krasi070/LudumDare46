@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Leg
   type: 0300000002000000
   sprite: {fileID: -4919073202130127920, guid: fcbb65c9bcced7a4fa856c75db84a03b, type: 3}
-  winScreenSize: {x: 100, y: 100}
+  winScreenSize: {x: 80, y: 80}
   demonMenuObject:
   - {fileID: 8534327962287771403, guid: 5ae99a5411a4919499c1f4bcb56d6f4d, type: 3}
   - {fileID: 4509113151503464317, guid: d9d2cd7066ca24342b78940fe10c5680, type: 3}

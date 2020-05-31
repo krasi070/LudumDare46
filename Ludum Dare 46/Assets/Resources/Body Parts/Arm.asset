@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Arm
   type: 0100000000000000
   sprite: {fileID: 974487868081046348, guid: fcbb65c9bcced7a4fa856c75db84a03b, type: 3}
-  winScreenSize: {x: 100, y: 80}
+  winScreenSize: {x: 80, y: 64}
   demonMenuObject:
   - {fileID: 5748996532361284252, guid: 6d7c9947c6741754389a5645b39dcae9, type: 3}
   - {fileID: 3402490206665102558, guid: cc14b1f8eed5d3445895db85a0157a69, type: 3}

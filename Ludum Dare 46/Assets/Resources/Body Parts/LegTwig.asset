@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Leg Twig
   type: 0300000002000000
   sprite: {fileID: -9037381587572429311, guid: fcbb65c9bcced7a4fa856c75db84a03b, type: 3}
-  winScreenSize: {x: 80, y: 100}
+  winScreenSize: {x: 64, y: 80}
   demonMenuObject:
   - {fileID: 948592172843855592, guid: e737ffd12fa744b4f803a77356c348b2, type: 3}
   - {fileID: 7983495679899284095, guid: dc6c82b36b2c9e54a8d20500d8017b4e, type: 3}

@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Brown Eyes
   type: 04000000
   sprite: {fileID: 9082365748853505584, guid: fcbb65c9bcced7a4fa856c75db84a03b, type: 3}
-  winScreenSize: {x: 100, y: 40}
+  winScreenSize: {x: 80, y: 32}
   demonMenuObject:
   - {fileID: 1462298566344486700, guid: fe9e1e9587f547544a45685c49d256ec, type: 3}
   vitality: 25

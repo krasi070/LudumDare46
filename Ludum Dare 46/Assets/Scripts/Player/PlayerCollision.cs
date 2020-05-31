@@ -1,16 +1,21 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 using TMPro;
 
 public class PlayerCollision : MonoBehaviour
 {
+    public GameObject textBox;
     public TextMeshProUGUI interactPrompt;
 
     private MapElement _collided;
 
+    private void Awake()
+    {
+        textBox.SetActive(false);
+    }
+
     private void Update()
     {
-        if (interactPrompt.gameObject.activeSelf && Input.GetAxis("Interact") > 0 && !PlayerStatus.IsPaused)
+        if (textBox.activeSelf && Input.GetAxis("Interact") > 0 && !PlayerStatus.IsPaused)
         {
             if (_collided != null)
             {
@@ -34,7 +39,7 @@ public class PlayerCollision : MonoBehaviour
         if (collision.tag == "Interactable")
         {
             _collided = collision.GetComponent<MapElement>();
-            interactPrompt.gameObject.SetActive(true);
+            textBox.SetActive(true);
 
             if (MapStatus.InteractedWith.Contains(collision.gameObject.name))
             {
@@ -49,6 +54,6 @@ public class PlayerCollision : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        interactPrompt.gameObject.SetActive(false);
+        textBox.SetActive(false);
     }
 }

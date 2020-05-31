@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Arm Twig
   type: 0100000000000000
   sprite: {fileID: 6742676395581644718, guid: fcbb65c9bcced7a4fa856c75db84a03b, type: 3}
-  winScreenSize: {x: 100, y: 100}
+  winScreenSize: {x: 80, y: 80}
   demonMenuObject:
   - {fileID: 368818251884566080, guid: 0d4695130a998df46bbfdf6fa47a4cf5, type: 3}
   - {fileID: 134865827624749995, guid: 455ab1c2583e0394ca9a6bc62ff204b1, type: 3}

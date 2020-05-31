@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Knife Arm
   type: 0100000000000000
   sprite: {fileID: -4003780198450858187, guid: fcbb65c9bcced7a4fa856c75db84a03b, type: 3}
-  winScreenSize: {x: 100, y: 100}
+  winScreenSize: {x: 80, y: 80}
   demonMenuObject:
   - {fileID: 9134077473523202813, guid: 458107c8df37c3a4ba4ae697ce4fe689, type: 3}
   - {fileID: 4785346893360147430, guid: 1542160f686e2a0409942f9c5455f7d0, type: 3}

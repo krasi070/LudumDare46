@@ -12,7 +12,7 @@ public class ClickToContinue : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        switch (BattleManager.State)
+        switch (BattleManager.Instance.State)
         {
             case BattleState.BattleStart:
             case BattleState.StartPlayerTurn:

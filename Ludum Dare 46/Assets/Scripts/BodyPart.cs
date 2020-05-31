@@ -28,7 +28,7 @@ public class BodyPart : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (BattleManager.State == BattleState.PlayerTurn)
+        if (BattleManager.Instance.State == BattleState.PlayerTurn)
         {
             SetSelectBordersVisibility(true);
             _parent.ShowBodyPartUi(this);
@@ -37,7 +37,7 @@ public class BodyPart : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (BattleManager.State == BattleState.PlayerTurn)
+        if (BattleManager.Instance.State == BattleState.PlayerTurn)
         {
             if (_isSelected)
             {
@@ -54,7 +54,7 @@ public class BodyPart : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (BattleManager.State == BattleState.PlayerTurn)
+        if (BattleManager.Instance.State == BattleState.PlayerTurn)
         {
             if (_parent.selectedBodyPart == null)
             {

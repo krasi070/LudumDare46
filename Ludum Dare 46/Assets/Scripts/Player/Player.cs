@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
     [HideInInspector]
     public bool isMoving;
 
+    private Coroutine _lastAddDemonLifeCoroutine;
+
     private void Awake()
     {
         Cursor.visible = false;
@@ -70,10 +72,15 @@ public class Player : MonoBehaviour
         }
     }
 
-    // These shouldn't be here...
+    // Everything below shouldn't be here...
     public void AddDemonLife(int toAdd)
     {
-        StartCoroutine(AddDemonLifeEffect(toAdd));
+        if (_lastAddDemonLifeCoroutine != null)
+        {
+            StopCoroutine(_lastAddDemonLifeCoroutine);
+        }
+        
+        _lastAddDemonLifeCoroutine = StartCoroutine(AddDemonLifeEffect(toAdd));
     }
 
     public void ExecuteBloodDropletEffect()
@@ -132,16 +139,19 @@ public class Player : MonoBehaviour
     private IEnumerator AddDemonLifeEffect(int toAdd)
     {
         int added = 0;
+        int demonLifeToDisplay = Mathf.FloorToInt(demonLife);
+        demonLife += toAdd;
 
         while (added < toAdd)
         {
-            demonLifeText.text = $"{Mathf.FloorToInt(demonLife)}\n(+{toAdd - added})";
-            demonLife++;
+            demonLifeText.text = $"{demonLifeToDisplay}\n(+{toAdd - added})";
+            demonLifeToDisplay++;
             added++;
 
             yield return new WaitForSeconds(0.1f);
         }
 
         demonLifeText.text = $"{Mathf.FloorToInt(demonLife)}";
+        _lastAddDemonLifeCoroutine = null;
     }
 }

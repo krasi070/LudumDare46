@@ -39,7 +39,7 @@ public class Enemy : MonoBehaviour
     {
         // TODO: Implement enemy AI
         int randomDamage = Random.Range(1, 13);
-        PlayerStatus.Vitality -= randomDamage;
+        PlayerStatus.Vitality = Mathf.Max(PlayerStatus.Vitality - randomDamage, 0);
         AudioManager.instance.Play("TreeAttack", true);
 
         if (!PlayerStatus.IsAlive)

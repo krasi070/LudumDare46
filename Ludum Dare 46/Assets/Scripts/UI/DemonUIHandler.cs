@@ -21,6 +21,7 @@ public class DemonUIHandler : MonoBehaviour
 
     private void Awake()
     {
+        demonMenu.SetActive(true);
         demonMenu.transform.position = _hiddenPosition;
     }
 

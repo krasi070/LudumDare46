@@ -51,7 +51,7 @@ public class AddBodyPartChoice : MonoBehaviour
 
     public void ConsumeBodyPart(int consumptionAmount)
     {
-        PlayerStatus.DemonMeter = Mathf.Min(PlayerStatus.DemonMeter + consumptionAmount, PlayerStatus.MaxDemonMeter);
+        PlayerStatus.DemonLife += consumptionAmount;
         bodyPartPanel.SetActive(false);
         GetComponent<BattleManager>().UpdateState();
     }

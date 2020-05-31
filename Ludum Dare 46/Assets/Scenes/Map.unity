@@ -683,6 +683,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
+  demonLifeUi: {fileID: 1880648285}
 --- !u!61 &554010417
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -721,11 +722,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba4afe85fdb03f746a9544e4e0df8f18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vitality: 100
-  demonLife: 0
-  demonMeterDepletionRate: 2
-  demonLifeText: {fileID: 1880648283}
-  isMoving: 0
+  demonLifeUi: {fileID: 1880648285}
 --- !u!114 &554010419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2439,6 +2436,7 @@ GameObject:
   - component: {fileID: 1880648282}
   - component: {fileID: 1880648284}
   - component: {fileID: 1880648283}
+  - component: {fileID: 1880648285}
   m_Layer: 5
   m_Name: DemonLifeText
   m_TagString: Untagged
@@ -2484,7 +2482,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 180
+  m_text: 100
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e06342f84952ba447b0a520d67268d95, type: 2}
   m_sharedMaterial: {fileID: 2293226795221570018, guid: e06342f84952ba447b0a520d67268d95,
@@ -2585,6 +2583,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1880648281}
   m_CullTransparentMesh: 0
+--- !u!114 &1880648285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1880648281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6686777817001314da9c33a86b8cf76e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  demonLifeText: {fileID: 1880648283}
 --- !u!1 &2043175475
 GameObject:
   m_ObjectHideFlags: 0

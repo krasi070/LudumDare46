@@ -185,14 +185,14 @@ public class BattleManager : MonoBehaviour
     {
         int amountRequired = 5;
 
-        if (PlayerStatus.DemonMeter - amountRequired <= 0)
+        if (PlayerStatus.DemonLife - amountRequired <= 0)
         {
             ShowInfoText($"Not enough demon life force to use Wrath.");
 
             return;
         }
 
-        PlayerStatus.DemonMeter -= amountRequired;
+        PlayerStatus.DemonLife -= amountRequired;
         StartCoroutine(DemonLifeDamageEffect());
         UpdatePlayerUi();
         float damageToDeal = (PlayerStatus.Attack + Random.Range(0, PlayerStatus.ExtraDamage + 1)) * 1.5f;
@@ -325,7 +325,7 @@ public class BattleManager : MonoBehaviour
     private void UpdatePlayerUi()
     {
         playerVitalityText.text = $"{PlayerStatus.Vitality} / {PlayerStatus.MaxVitality}";
-        demonMeterText.text = $"{Mathf.FloorToInt(PlayerStatus.DemonMeter)}";
+        demonMeterText.text = $"{Mathf.FloorToInt(PlayerStatus.DemonLife)}";
     }
 
     private void DestroyButtons()
@@ -460,12 +460,12 @@ public class BattleManager : MonoBehaviour
                 currFontSize = Mathf.Clamp(currFontSize - increaseRate * Time.deltaTime, originalfontSize, increaseTo);
             }
 
-            demonMeterText.text = $"<size={currFontSize}><color=#CA0909>{Mathf.FloorToInt(PlayerStatus.DemonMeter)}</color></size>";
+            demonMeterText.text = $"<size={currFontSize}><color=#CA0909>{Mathf.FloorToInt(PlayerStatus.DemonLife)}</color></size>";
 
             yield return null;
         }
 
-        demonMeterText.text = $"{Mathf.FloorToInt(PlayerStatus.DemonMeter)}";
+        demonMeterText.text = $"{Mathf.FloorToInt(PlayerStatus.DemonLife)}";
     }
 
     private IEnumerator TextDamageEffect(TextMeshProUGUI textField, string beforeText, string redText, string afterText = "")

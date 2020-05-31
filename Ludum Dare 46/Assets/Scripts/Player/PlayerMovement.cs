@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerMove : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     public float speed;
+    public DemonLifeUIHandler demonLifeUi;
 
     private Vector2 _direction;
     private Rigidbody2D _rb;
@@ -22,8 +23,9 @@ public class PlayerMove : MonoBehaviour
             _direction.x = Input.GetAxisRaw("Horizontal");
             _direction.y = Input.GetAxisRaw("Vertical");
 
-            if (_player.demonLife <= 0)
+            if (!PlayerStatus.IsAlive)
             {
+                // TODO: Add transition
                 SceneManager.LoadScene("GameOver");
             }
         }
@@ -32,20 +34,21 @@ public class PlayerMove : MonoBehaviour
     private void FixedUpdate()
     {
         _rb.MovePosition(_rb.position + _direction * speed * Time.fixedDeltaTime);
-        _player.isMoving = _direction.x != 0 || _direction.y != 0;
+        PlayerStatus.IsMoving = _direction.x != 0 || _direction.y != 0;
 
         // Deplete demon meter every step
-        if (_player.isMoving)
+        if (PlayerStatus.IsMoving)
         {
-            _player.demonLife -= _player.demonMeterDepletionRate * Time.fixedDeltaTime;
+            demonLifeUi.StopAddDemonLifeEffect();
+            PlayerStatus.DemonLife -= PlayerStatus.DemonLifeDepletionRate * Time.fixedDeltaTime;
 
-            int oldValue = int.Parse(_player.demonLifeText.text);
-            _player.UpdateDemonMeter();
-            int newValue = int.Parse(_player.demonLifeText.text);
+            int oldValue = int.Parse(demonLifeUi.demonLifeText.text);
+            demonLifeUi.UpdateDemonLife();
+            int newValue = int.Parse(demonLifeUi.demonLifeText.text);
 
             if (newValue < oldValue)
             {
-                _player.ExecuteBloodDropletEffect();
+                demonLifeUi.ExecuteBloodDropletEffect();
             }
         }
     }

@@ -70,7 +70,7 @@ public class DemonLifeUIHandler : MonoBehaviour
 
     private IEnumerator BloodDropletEffect()
     {
-        GameObject textInstance = Instantiate(Resources.Load<GameObject>("Prefabs/Text/BloodDropletText"), demonLifeText.transform);
+        GameObject textInstance = Instantiate(Resources.Load<GameObject>("Prefabs/UI/Text/BloodDropletText"), demonLifeText.transform);
         TextMeshProUGUI text = textInstance.GetComponent<TextMeshProUGUI>();
         RectTransform rect = textInstance.GetComponent<RectTransform>();
 

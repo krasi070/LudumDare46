@@ -1,29 +1,26 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class ClickToContinue : MonoBehaviour, IPointerClickHandler
 {
-    private BattleManager _battleManager;
-
-    private void Start()
-    {
-        _battleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();
-    }
-
     public void OnPointerClick(PointerEventData eventData)
     {
-        switch (BattleManager.Instance.State)
+        if (!BattleManager.Instance.battleMessage.IsPlayingMessage)
         {
-            case BattleState.BattleStart:
-            case BattleState.StartPlayerTurn:
-            case BattleState.EndPlayerTurn:
-            case BattleState.StartEnemyTurn:
-            case BattleState.EndEnemyTurn:
-                _battleManager.UpdateState();
-                break;
-            case BattleState.ChoiceMade:
-                LevelManager.instance.LoadScene("Map");
-                break;
+            switch (BattleManager.Instance.State)
+            {
+                case BattleState.BattleStart:
+                case BattleState.StartPlayerTurn:
+                case BattleState.EndPlayerTurn:
+                case BattleState.StartEnemyTurn:
+                case BattleState.EndEnemyTurn:
+                    BattleManager.Instance.UpdateState();
+                    break;
+                case BattleState.ChoiceMade:
+                    LevelManager.instance.LoadScene("Map");
+                    break;
+            }
         }
     }
 }

@@ -9,8 +9,11 @@ public class BattleManager : MonoBehaviour
     public TextMeshProUGUI playerVitalityText;
     public TextMeshProUGUI demonMeterText;
     public GameObject buttonLayout;
-    public TextMeshProUGUI info;
+    public SequentialText battleMessage;
     public ShakeBehaviour cameraShake;
+
+    private bool _showingSelectBodyPartMessage = false;
+    private bool _showingLastMessage = false;
 
     public static BattleManager Instance { get; private set; }
 
@@ -96,21 +99,24 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void ShowInfoText(string text)
+    public void ShowInfoText(string text, bool showContinueImageWhenDone = true)
     {
         buttonLayout.GetComponentInChildren<ActionButton>().HideTextBox();
         buttonLayout.SetActive(false);
-        info.gameObject.SetActive(true);
+        battleMessage.gameObject.SetActive(true);
 
-        info.text = text;
+        battleMessage.Clear();
+        battleMessage.PlayMessage(text, showContinueImageWhenDone);
     }
 
-    public void ShowTextIfEnemyIsDefeated()
+    public string ConcatEnemyDefeatedMessageIfTrue(string message)
     {
         if (!CurrentEnemy.IsAlive)
         {
-            info.text += $"\nSuccessfully stole {CurrentEnemy.name}'s {CurrentEnemy.selectedBodyPart.data.name}. Where do you want to attach it?";
+            return $"{message}\n{CurrentEnemy.GetDefeatedMessage()}";
         }
+
+        return message;
     }
 
     private void ExecuteActionBasedOnState()
@@ -119,10 +125,15 @@ public class BattleManager : MonoBehaviour
         {
             if (CurrentEnemy.selectedBodyPart == null)
             {
-                ShowInfoText("Select a body part to steal!");
+                if (!_showingSelectBodyPartMessage)
+                {
+                    _showingSelectBodyPartMessage = true;
+                    ShowInfoText("Select a body part to steal!", false);
+                }
             }
             else
             {
+                _showingSelectBodyPartMessage = false;
                 ShowActionButtons();
             }
         }
@@ -160,9 +171,13 @@ public class BattleManager : MonoBehaviour
 
         if (State == BattleState.ChoiceMade)
         {
-            buttonLayout.transform.parent.gameObject.SetActive(true);
-            UpdatePlayerUi();
-            ShowInfoText("On to the next one...");
+            if (!_showingLastMessage)
+            {
+                buttonLayout.transform.parent.gameObject.SetActive(true);
+                UpdatePlayerUi();
+                ShowInfoText("On to the next one...");
+                _showingLastMessage = true;
+            }
         }
 
         if (State == BattleState.Lose)
@@ -184,13 +199,13 @@ public class BattleManager : MonoBehaviour
 
         // Stab
         GameObject stabButtonInstance = Instantiate(
-                Resources.Load<GameObject>("Prefabs/Buttons/StabButton"), buttonLayout.transform);
+                Resources.Load<GameObject>("Prefabs/UI/Buttons/StabButton"), buttonLayout.transform);
 
         stabButtonInstance.GetComponentInChildren<Button>().onClick.AddListener(delegate { PlayerActions.Stab(); });
 
         // Wrath
         GameObject wrathButtonInstance = Instantiate(
-                Resources.Load<GameObject>("Prefabs/Buttons/WrathButton"), buttonLayout.transform);
+                Resources.Load<GameObject>("Prefabs/UI/Buttons/WrathButton"), buttonLayout.transform);
 
         wrathButtonInstance.GetComponentInChildren<Button>().onClick.AddListener(delegate { PlayerActions.Wrath(); });
 
@@ -198,7 +213,7 @@ public class BattleManager : MonoBehaviour
         if (PlayerStatus.Traits.ContainsKey(BodyPartTrait.Poison))
         {
             GameObject poisonButtonInstance = Instantiate(
-                Resources.Load<GameObject>("Prefabs/Buttons/PoisonButton"), buttonLayout.transform);
+                Resources.Load<GameObject>("Prefabs/UI/Buttons/PoisonButton"), buttonLayout.transform);
 
             poisonButtonInstance.GetComponentInChildren<Button>().onClick.AddListener(delegate { PlayerActions.Poison(); });
         }
@@ -223,7 +238,7 @@ public class BattleManager : MonoBehaviour
     private void ShowActionButtons()
     {
         buttonLayout.SetActive(true);
-        info.gameObject.SetActive(false);
+        battleMessage.gameObject.SetActive(false);
     }
 
     private void StartEnemyTurnActions()

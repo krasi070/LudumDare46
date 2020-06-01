@@ -69,7 +69,7 @@ public class AddBodyPartChoice : MonoBehaviour
         foreach (BodyPartTrait trait in bodyPart.traits)
         {
             GameObject traitTextInstance = Instantiate(
-                Resources.Load<GameObject>("Prefabs/Text/TraitText"), bodyPartInfo.transform);
+                Resources.Load<GameObject>("Prefabs/UI/Text/TraitText"), bodyPartInfo.transform);
 
             ActionText actionText = traitTextInstance.GetComponent<ActionText>();
             actionText.text = trait.ToString();
@@ -98,7 +98,7 @@ public class AddBodyPartChoice : MonoBehaviour
     private void AddReplaceButton(BodyPartData bodyPart, BodyPartType type)
     {
         GameObject buttonInstance = Instantiate(
-                Resources.Load<GameObject>("Prefabs/Buttons/ChoiceButton"), buttonLayout.transform);
+                Resources.Load<GameObject>("Prefabs/UI/Buttons/ChoiceButton"), buttonLayout.transform);
 
         buttonInstance.GetComponentInChildren<TextMeshProUGUI>().text =
                     $"Replace {EnumHelper.BodyPartTypeToString(type)}";
@@ -120,7 +120,7 @@ public class AddBodyPartChoice : MonoBehaviour
     private void AddAddAsButton(BodyPartData bodyPart, BodyPartType type)
     {
         GameObject buttonInstance = Instantiate(
-                Resources.Load<GameObject>("Prefabs/Buttons/ChoiceButton"), buttonLayout.transform);
+                Resources.Load<GameObject>("Prefabs/UI/Buttons/ChoiceButton"), buttonLayout.transform);
 
         buttonInstance.GetComponentInChildren<TextMeshProUGUI>().text =
                     $"Add as {EnumHelper.BodyPartTypeToString(type)}";
@@ -135,7 +135,7 @@ public class AddBodyPartChoice : MonoBehaviour
     private void AddConsumeButton(BodyPartData bodyPart)
     {
         GameObject consumeButtonInstance = Instantiate(
-                Resources.Load<GameObject>("Prefabs/Buttons/ChoiceButton"), buttonLayout.transform);
+                Resources.Load<GameObject>("Prefabs/UI/Buttons/ChoiceButton"), buttonLayout.transform);
 
         consumeButtonInstance.GetComponentInChildren<TextMeshProUGUI>().text = $"Consume ({bodyPart.consumptionAmount})";
         consumeButtonInstance.GetComponentInChildren<Button>().onClick.AddListener(delegate { ConsumeBodyPart(bodyPart.consumptionAmount); });
@@ -149,7 +149,7 @@ public class AddBodyPartChoice : MonoBehaviour
     {
         RectTransform rectTransformBg = bodyPartBackground.GetComponent<RectTransform>();
         RectTransform rectTransformBodyPartImage = bodyPartImage.GetComponent<RectTransform>();
-        float increment = 32f;
+        float increment = 360f / 10f;
         float timeUntilNexRotation = 0.6f;
         float timer = 0f;
 

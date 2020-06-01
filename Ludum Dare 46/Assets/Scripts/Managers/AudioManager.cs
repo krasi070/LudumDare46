@@ -25,7 +25,7 @@ public class AudioManager : MonoBehaviour
         InitSounds();
     }
 
-    public void Play(string name, bool varyVolume = false)
+    public void Play(string name, bool varyPitch = false, bool varyVolume = false)
     {
         int index = GetSoundIndex(name);
 
@@ -33,14 +33,24 @@ public class AudioManager : MonoBehaviour
         {
             if (varyVolume)
             {
-                float originalVolume = sounds[index].volume;
-                sounds[index].volume += Random.Range(-0.05f, 0.05f);
-                sounds[index].source.Play();
-                sounds[index].volume = originalVolume;
+                sounds[index].source.volume += Random.Range(-0.025f, 0.025f);
             }
-            else
+
+            if (varyPitch)
             {
-                sounds[index].source.Play();
+                sounds[index].source.pitch += Random.Range(-0.25f, 0.25f);
+            }
+            
+            sounds[index].source.Play();
+
+            if (varyVolume)
+            {
+                sounds[index].source.volume = sounds[index].volume;
+            }
+
+            if (varyPitch)
+            {
+                sounds[index].source.pitch = sounds[index].pitch;
             }
         }
     }
@@ -91,7 +101,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void UnPause(string name)
+    public void Unpause(string name)
     {
         int index = GetSoundIndex(name);
 

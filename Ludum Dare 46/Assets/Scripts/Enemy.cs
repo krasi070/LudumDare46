@@ -13,6 +13,9 @@ public class Enemy : MonoBehaviour
 
     public TextMeshProUGUI uiText;
 
+    [TextArea]
+    public string defeatedMessage;
+
     public bool IsAlive
     {
         get
@@ -44,10 +47,10 @@ public class Enemy : MonoBehaviour
 
         if (!PlayerStatus.IsAlive)
         {
-            return $"{name} attacks you for <color=#CA0909>{randomDamage}</color> damage.\n<color=#CA0909>LETHAL BLOW!</color>";
+            return $"{name} attacks you for {randomDamage} damage.\nLETHAL BLOW!";
         }
 
-        return $"{name} attacks you for <color=#CA0909>{randomDamage}</color> damage.";
+        return $"{name} attacks you for {randomDamage} damage.";
     }
 
     public bool TakeDamageAllBodyParts(int amount)
@@ -94,6 +97,17 @@ public class Enemy : MonoBehaviour
     public void ShakeSprite()
     {
         StartCoroutine(SpriteShakeEffect());
+    }
+
+    public string GetDefeatedMessage()
+    {
+        if (string.IsNullOrEmpty(defeatedMessage))
+        {
+            return $"Successfully stole {name}'s {selectedBodyPart.data.name}." + 
+                $" Where do you want to attach {(selectedBodyPart.data.type[0] == BodyPartType.Eyes ? "them" : "it")}?";
+        }
+
+        return defeatedMessage;
     }
 
     private void SetTraits()

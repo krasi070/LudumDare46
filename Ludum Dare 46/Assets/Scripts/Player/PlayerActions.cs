@@ -21,18 +21,19 @@ public static class PlayerActions
         BattleManager.Instance.DamageEnemy(Mathf.CeilToInt(damageToDeal));
         BattleManager.Instance.UpdateState();
 
+        string message = string.Empty;
+
         if (isCriticalHit)
         {
-            BattleManager.Instance.ShowInfoText(
-                $"Critical stab! {enemy.name}'s {enemy.selectedBodyPart.data.name.ToLower()} took <color=#CA0909>{damageToDeal}</color> damage!");
+            message += $"Critical stab! {enemy.name}'s {enemy.selectedBodyPart.data.name.ToLower()} took {damageToDeal} damage!";
         }
         else
         {
-            BattleManager.Instance.ShowInfoText(
-                $"You stabbed {enemy.name}'s {enemy.selectedBodyPart.data.name.ToLower()} for <color=#CA0909>{damageToDeal}</color> damage!");
+            message += $"You stabbed {enemy.name}'s {enemy.selectedBodyPart.data.name.ToLower()} for {damageToDeal} damage!";
         }
 
-        BattleManager.Instance.ShowTextIfEnemyIsDefeated();
+        message = BattleManager.Instance.ConcatEnemyDefeatedMessageIfTrue(message);
+        BattleManager.Instance.ShowInfoText(message);
     }
 
     /// <summary>
@@ -77,23 +78,23 @@ public static class PlayerActions
         BattleManager.Instance.DamageEnemy(Mathf.CeilToInt(damageToDeal));
         BattleManager.Instance.UpdateState();
 
+        string message = string.Empty;
+
         if (isCriticalHit)
         {
-            BattleManager.Instance.ShowInfoText(
-                $"Critical claw attack! {enemy.name}'s {enemy.selectedBodyPart.data.name.ToLower()} took {damageToDeal} damage!");
+            message += $"Critical claw attack! {enemy.name}'s {enemy.selectedBodyPart.data.name.ToLower()} took {damageToDeal} damage!";
         }
         else if (isEye)
         {
-            BattleManager.Instance.ShowInfoText(
-                $"Gouged {enemy.name}'s {enemy.selectedBodyPart.data.name.ToLower()} for {damageToDeal} damage!");
+            message += $"Gouged {enemy.name}'s {enemy.selectedBodyPart.data.name.ToLower()} for {damageToDeal} damage!";
         }
         else
         {
-            BattleManager.Instance.ShowInfoText(
-                $"{enemy.name}'s {enemy.selectedBodyPart.data.name.ToLower()} for {damageToDeal} damage. Should've went for the eyes.");
+            message += $"{enemy.name}'s {enemy.selectedBodyPart.data.name.ToLower()} for {damageToDeal} damage. Should've went for the eyes.";
         }
 
-        BattleManager.Instance.ShowTextIfEnemyIsDefeated();
+        message = BattleManager.Instance.ConcatEnemyDefeatedMessageIfTrue(message);
+        BattleManager.Instance.ShowInfoText(message);
     }
 
     /// <summary>
@@ -142,17 +143,20 @@ public static class PlayerActions
         BattleManager.Instance.DamageEnemy(Mathf.CeilToInt(damageToDeal));
         BattleManager.Instance.UpdateState();
 
+        string message = string.Empty;
+
         if (isCriticalHit)
         {
-            BattleManager.Instance.ShowInfoText(
-                $"Critical attack! {enemy.name}'s {enemy.selectedBodyPart.data.name.ToLower()} took <color=#CA0909>{Mathf.CeilToInt(damageToDeal)}</color> damage from your wrath!");
+            message +=
+                $"Critical attack! {enemy.name}'s {enemy.selectedBodyPart.data.name.ToLower()} took {Mathf.CeilToInt(damageToDeal)} damage from your wrath!";
         }
         else
         {
-            BattleManager.Instance.ShowInfoText(
-                $"You used Wrath against {enemy.name}'s {enemy.selectedBodyPart.data.name.ToLower()}! Dealt <color=#CA0909>{Mathf.CeilToInt(damageToDeal)}</color> damage!");
+            message +=
+                $"You used Wrath against {enemy.name}'s {enemy.selectedBodyPart.data.name.ToLower()}! Dealt {Mathf.CeilToInt(damageToDeal)} damage!";
         }
 
-        BattleManager.Instance.ShowTextIfEnemyIsDefeated();
+        message = BattleManager.Instance.ConcatEnemyDefeatedMessageIfTrue(message);
+        BattleManager.Instance.ShowInfoText(message);
     }
 }

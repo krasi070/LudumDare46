@@ -64,7 +64,7 @@ public class DemonUIHandler : MonoBehaviour
         // Add current traits
         foreach (BodyPartTrait trait in data.traits)
         {
-            GameObject traitTextInstance = Instantiate(Resources.Load<GameObject>("Prefabs/Text/TraitText"), infoPanel.transform);
+            GameObject traitTextInstance = Instantiate(Resources.Load<GameObject>("Prefabs/UI/Text/TraitText"), infoPanel.transform);
             RectTransform rect = traitTextInstance.GetComponent<RectTransform>();
             rect.sizeDelta = new Vector2(110, 30);
 

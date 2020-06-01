@@ -196,7 +196,7 @@ public class SequentialText : MonoBehaviour
             SetText(GetText().Insert(insertIndex, newCharacterWithColorCode));
             index++;
 
-            if (index > 0 && (message[index - 1] == '.' || message[index - 1] == '?' || message[index - 1] == '!'))
+            if (!_skipToEnd && index > 0 && (message[index - 1] == '.' || message[index - 1] == '?' || message[index - 1] == '!'))
             {
                 yield return new WaitForSeconds(0.2f);
             }

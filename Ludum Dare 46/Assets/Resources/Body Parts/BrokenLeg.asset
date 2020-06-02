@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 948212fcb80ca9b42aa2e65449c63f0f, type: 3}
+  m_Name: BrokenLeg
+  m_EditorClassIdentifier: 
+  name: Broken Leg
+  type: 0300000002000000
+  sprite: {fileID: -6559454519395683496, guid: fcbb65c9bcced7a4fa856c75db84a03b, type: 3}
+  winScreenSize: {x: 80, y: 67}
+  demonMenuObject:
+  - {fileID: 6953393957352655030, guid: cfcc6e58bc6563e43a7d927342f39fe9, type: 3}
+  - {fileID: 5587663341826680243, guid: bb7965d1675e62c41a5756838b1d1cf3, type: 3}
+  vitality: 35
+  consumptionAmount: 25
+  traits: 0800000009000000

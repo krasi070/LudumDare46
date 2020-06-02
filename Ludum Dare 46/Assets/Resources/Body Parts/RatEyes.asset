@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 948212fcb80ca9b42aa2e65449c63f0f, type: 3}
+  m_Name: RatEyes
+  m_EditorClassIdentifier: 
+  name: Rat Eyes
+  type: 04000000
+  sprite: {fileID: -5587015257264888556, guid: fcbb65c9bcced7a4fa856c75db84a03b, type: 3}
+  winScreenSize: {x: 80, y: 20}
+  demonMenuObject:
+  - {fileID: 1219275456758782353, guid: cacd22529fa50b6419e329047ee7f29f, type: 3}
+  vitality: 37
+  consumptionAmount: 12
+  traits: 0500000005000000

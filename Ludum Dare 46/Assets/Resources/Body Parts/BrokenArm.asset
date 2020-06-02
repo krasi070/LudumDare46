@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 948212fcb80ca9b42aa2e65449c63f0f, type: 3}
+  m_Name: BrokenArm
+  m_EditorClassIdentifier: 
+  name: Broken Arm
+  type: 0100000000000000
+  sprite: {fileID: 8017223009207450566, guid: fcbb65c9bcced7a4fa856c75db84a03b, type: 3}
+  winScreenSize: {x: 80, y: 80}
+  demonMenuObject:
+  - {fileID: 15808429713065573, guid: 8bc56516296d6274c88cdc8f59feca10, type: 3}
+  - {fileID: 7536287669261647155, guid: bbb9c80831d49f54bb26d8be06a9bd8c, type: 3}
+  vitality: 25
+  consumptionAmount: 16
+  traits: 0900000008000000

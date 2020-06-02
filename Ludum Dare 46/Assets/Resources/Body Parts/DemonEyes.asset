@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 948212fcb80ca9b42aa2e65449c63f0f, type: 3}
+  m_Name: DemonEyes
+  m_EditorClassIdentifier: 
+  name: Demon Eyes
+  type: 04000000
+  sprite: {fileID: -7200433316968996432, guid: fcbb65c9bcced7a4fa856c75db84a03b, type: 3}
+  winScreenSize: {x: 80, y: 40}
+  demonMenuObject:
+  - {fileID: 1190185942674706310, guid: 2b911d48f5ff2f94ca699ecfb48d4833, type: 3}
+  vitality: 100
+  consumptionAmount: 666
+  traits: 0600000000000000

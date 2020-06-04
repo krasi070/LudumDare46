@@ -60,7 +60,7 @@ public class BodyPartUIHandler : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public void Consume()
     {
         Player player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-        player.demonLifeUi.AddDemonLife(data.consumptionAmount);
+        player.demonLifeUI.AddDemonLife(data.consumptionAmount);
         PlayerStatus.BodyParts.Remove(type);
 
         _demonUIHandler.HideBodyPartData();

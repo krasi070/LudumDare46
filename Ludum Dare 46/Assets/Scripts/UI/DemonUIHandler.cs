@@ -80,7 +80,7 @@ public class DemonUIHandler : MonoBehaviour
         // Modify consume button
         ActionButton consumeActionButton = consumeButton.GetComponentInChildren<ActionButton>();
         consumeActionButton.description = $"Restore {data.consumptionAmount} Demon Life.";
-        consumeButton.GetComponentInChildren<TextMeshProUGUI>().text = $"Consume ({data.consumptionAmount})";
+        consumeButton.GetComponentInChildren<TextMeshProUGUI>().text = $"Consume (+{data.consumptionAmount})";
         consumeButton.GetComponentInChildren<Button>().onClick.RemoveAllListeners();
         consumeButton.GetComponentInChildren<Button>().onClick.AddListener(delegate {
             bodyPartObj.Consume();

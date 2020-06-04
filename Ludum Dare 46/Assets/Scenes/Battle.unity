@@ -323,7 +323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerVitalityText: {fileID: 450086587}
-  demonMeterText: {fileID: 2017388959}
+  demonLifeText: {fileID: 2017388959}
   buttonLayout: {fileID: 1113822600}
   battleMessage: {fileID: 1206856947}
   cameraShake: {fileID: 559374971}

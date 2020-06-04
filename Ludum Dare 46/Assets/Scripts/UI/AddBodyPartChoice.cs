@@ -17,7 +17,7 @@ public class AddBodyPartChoice : MonoBehaviour
         bodyPartPanel.SetActive(false);
     }
 
-    public void MakeChoice(BodyPartData bodyPart)
+    public void ShowOptionsAndBodyPart(BodyPartData bodyPart)
     {
         bodyPartPanel.SetActive(true);
         AddBodyPartSprite(bodyPart);
@@ -31,7 +31,7 @@ public class AddBodyPartChoice : MonoBehaviour
     {
         PlayerStatus.BodyParts[placeToBeReplaced] = bodyPart;
         bodyPartPanel.SetActive(false);
-        GetComponent<BattleManager>().UpdateState();
+        BattleManager.Instance.UpdateState();
     }
 
     public void AddBodyPart(BodyPartData bodyPart, BodyPartType placeToAdd)
@@ -46,14 +46,14 @@ public class AddBodyPartChoice : MonoBehaviour
         }
 
         bodyPartPanel.SetActive(false);
-        GetComponent<BattleManager>().UpdateState();
+        BattleManager.Instance.UpdateState();
     }
 
     public void ConsumeBodyPart(int consumptionAmount)
     {
-        PlayerStatus.DemonLife += consumptionAmount;
+        BattleManager.Instance.AddDemonLife(consumptionAmount);
         bodyPartPanel.SetActive(false);
-        GetComponent<BattleManager>().UpdateState();
+        BattleManager.Instance.UpdateState();
     }
 
     private void AddBodyPartSprite(BodyPartData bodyPart)
@@ -137,9 +137,9 @@ public class AddBodyPartChoice : MonoBehaviour
         GameObject consumeButtonInstance = Instantiate(
                 Resources.Load<GameObject>("Prefabs/UI/Buttons/ChoiceButton"), buttonLayout.transform);
 
-        consumeButtonInstance.GetComponentInChildren<TextMeshProUGUI>().text = $"Consume ({bodyPart.consumptionAmount})";
+        consumeButtonInstance.GetComponentInChildren<TextMeshProUGUI>().text = $"Consume (+{bodyPart.consumptionAmount})";
         consumeButtonInstance.GetComponentInChildren<Button>().onClick.AddListener(delegate { ConsumeBodyPart(bodyPart.consumptionAmount); });
-        
+
         ActionButton actionButton = consumeButtonInstance.transform.GetChild(0).gameObject.AddComponent<ActionButton>();
         actionButton.tiltDegrees = -3f;
         actionButton.description = $"Restore {bodyPart.consumptionAmount} Demon Life.";

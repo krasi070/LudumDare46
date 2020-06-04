@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public DemonLifeUIHandler demonLifeUi;
+    public DemonLifeUIHandler demonLifeUI;
 
     private void Awake()
     {
@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
             transform.position = MapStatus.PlayerPosition;
         }
 
-        demonLifeUi.UpdateDemonLife();
+        demonLifeUI.UpdateDemonLife();
     }
 
     private void Start()

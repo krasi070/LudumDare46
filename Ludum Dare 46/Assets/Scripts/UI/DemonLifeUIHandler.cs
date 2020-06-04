@@ -93,6 +93,9 @@ public class DemonLifeUIHandler : MonoBehaviour
 
     private IEnumerator AddDemonLifeEffect(int toAdd)
     {
+        float overallTime = Mathf.Min(0.5f, toAdd * 0.1f);
+        float waitTime = overallTime / toAdd;
+
         int added = 0;
         int demonLifeToDisplay = Mathf.FloorToInt(PlayerStatus.DemonLife);
         PlayerStatus.DemonLife += toAdd;
@@ -103,7 +106,7 @@ public class DemonLifeUIHandler : MonoBehaviour
             demonLifeToDisplay++;
             added++;
 
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(waitTime);
         }
 
         UpdateDemonLife();

@@ -737,7 +737,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba4afe85fdb03f746a9544e4e0df8f18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  demonLifeUi: {fileID: 1880648285}
+  demonLifeUI: {fileID: 1880648285}
 --- !u!114 &554010419
 MonoBehaviour:
   m_ObjectHideFlags: 0

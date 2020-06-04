@@ -7,7 +7,7 @@ using TMPro;
 public class BattleManager : MonoBehaviour
 {
     public TextMeshProUGUI playerVitalityText;
-    public TextMeshProUGUI demonMeterText;
+    public TextMeshProUGUI demonLifeText;
     public GameObject buttonLayout;
     public SequentialText battleMessage;
     public ShakeBehaviour cameraShake;
@@ -79,12 +79,6 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void SacrificeDemonLife(int amount)
-    {
-        StartCoroutine(DemonLifeDamageEffect());
-        UpdatePlayerUi();
-    }
-
     public void DamageEnemy(int amount)
     {
         if (CurrentEnemy.selectedBodyPart != null)
@@ -117,6 +111,22 @@ public class BattleManager : MonoBehaviour
         }
 
         return message;
+    }
+
+    public void AddDemonLife(int amount)
+    {
+        StartCoroutine(AddDemonLifeEffect(amount));
+    }
+
+    public void SubtractDemonLife(int amount)
+    {
+        StartCoroutine(SubtractDemonLifeEffect(amount));
+    }
+
+    public void UpdatePlayerUI()
+    {
+        playerVitalityText.text = $"{PlayerStatus.Vitality} / {PlayerStatus.MaxVitality}";
+        demonLifeText.text = $"{Mathf.FloorToInt(PlayerStatus.DemonLife)}";
     }
 
     private void ExecuteActionBasedOnState()
@@ -155,7 +165,7 @@ public class BattleManager : MonoBehaviour
             }
             else
             {
-                UpdatePlayerUi();
+                UpdatePlayerUI();
             }
             
             UpdateState();
@@ -165,7 +175,7 @@ public class BattleManager : MonoBehaviour
         {
             CurrentEnemy.gameObject.SetActive(false);
             DestroyButtons();
-            GetComponent<AddBodyPartChoice>().MakeChoice(CurrentEnemy.selectedBodyPart.data);
+            GetComponent<AddBodyPartChoice>().ShowOptionsAndBodyPart(CurrentEnemy.selectedBodyPart.data);
             ShowActionButtons();
         }
 
@@ -174,7 +184,7 @@ public class BattleManager : MonoBehaviour
             if (!_showingLastMessage)
             {
                 buttonLayout.transform.parent.gameObject.SetActive(true);
-                UpdatePlayerUi();
+                UpdatePlayerUI();
                 ShowInfoText("On to the next one...");
                 _showingLastMessage = true;
             }
@@ -194,7 +204,7 @@ public class BattleManager : MonoBehaviour
 
     private void SetUpPlayer()
     {
-        UpdatePlayerUi();
+        UpdatePlayerUI();
         DestroyButtons();
 
         // Stab
@@ -219,12 +229,6 @@ public class BattleManager : MonoBehaviour
         }
 
         // TODO: Add more trait related actions
-    }
-
-    private void UpdatePlayerUi()
-    {
-        playerVitalityText.text = $"{PlayerStatus.Vitality} / {PlayerStatus.MaxVitality}";
-        demonMeterText.text = $"{Mathf.FloorToInt(PlayerStatus.DemonLife)}";
     }
 
     private void DestroyButtons()
@@ -305,7 +309,7 @@ public class BattleManager : MonoBehaviour
 
     private IEnumerator DemonLifeDamageEffect()
     {
-        float originalfontSize = demonMeterText.fontSize;
+        float originalfontSize = demonLifeText.fontSize;
         float currFontSize = originalfontSize;
         float increaseTo = originalfontSize * 1.5f;
         float increaseRate = 100f;
@@ -323,12 +327,12 @@ public class BattleManager : MonoBehaviour
                 currFontSize = Mathf.Clamp(currFontSize - increaseRate * Time.deltaTime, originalfontSize, increaseTo);
             }
 
-            demonMeterText.text = $"<size={currFontSize}><color=#CA0909>{Mathf.FloorToInt(PlayerStatus.DemonLife)}</color></size>";
+            demonLifeText.text = $"<size={currFontSize}><color=#CA0909>{Mathf.FloorToInt(PlayerStatus.DemonLife)}</color></size>";
 
             yield return null;
         }
 
-        demonMeterText.text = $"{Mathf.FloorToInt(PlayerStatus.DemonLife)}";
+        demonLifeText.text = $"{Mathf.FloorToInt(PlayerStatus.DemonLife)}";
     }
 
     private IEnumerator TextDamageEffect(TextMeshProUGUI textField, string beforeText, string redText, string afterText = "")
@@ -357,5 +361,47 @@ public class BattleManager : MonoBehaviour
         }
 
         textField.text = beforeText + redText + afterText;
+    }
+
+    private IEnumerator AddDemonLifeEffect(int toAdd)
+    {
+        float overallTime = Mathf.Min(0.5f, toAdd * 0.1f);
+        float waitTime = overallTime / toAdd;
+
+        int added = 0;
+        int demonLifeToDisplay = Mathf.FloorToInt(PlayerStatus.DemonLife);
+        PlayerStatus.DemonLife += toAdd;
+
+        while (added < toAdd)
+        {
+            demonLifeText.text = $"{demonLifeToDisplay} (+{toAdd - added})";
+            demonLifeToDisplay++;
+            added++;
+
+            yield return new WaitForSeconds(waitTime);
+        }
+
+        UpdatePlayerUI();
+    }
+
+    private IEnumerator SubtractDemonLifeEffect(int toSubtract)
+    {
+        float overallTime = Mathf.Min(0.5f, toSubtract * 0.1f);
+        float waitTime = overallTime / toSubtract;
+
+        int subtracted = 0;
+        int demonLifeToDisplay = Mathf.FloorToInt(PlayerStatus.DemonLife);
+        PlayerStatus.DemonLife = Mathf.Max(0, PlayerStatus.DemonLife - toSubtract);
+
+        while (subtracted < toSubtract)
+        {
+            demonLifeText.text = $"{demonLifeToDisplay} (-{toSubtract - subtracted})";
+            demonLifeToDisplay = Mathf.Max(0, demonLifeToDisplay - 1);
+            subtracted++;
+
+            yield return new WaitForSeconds(waitTime);
+        }
+
+        UpdatePlayerUI();
     }
 }

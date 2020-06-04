@@ -116,7 +116,7 @@ public static class PlayerActions
     }
 
     /// <summary>
-    /// Deal 1.5 times the damage you would normally deal in exchange for demon meter.
+    /// Deal 1.5 times the damage you would normally deal in exchange for demon life.
     /// </summary>
     public static void Wrath()
     {
@@ -130,8 +130,7 @@ public static class PlayerActions
             return;
         }
 
-        PlayerStatus.DemonLife -= amountRequired;
-        BattleManager.Instance.SacrificeDemonLife(amountRequired);
+        BattleManager.Instance.SubtractDemonLife(amountRequired);
         float damageToDeal = (PlayerStatus.Attack + Random.Range(0, PlayerStatus.ExtraDamage + 1)) * 1.5f;
         bool isCriticalHit = Random.Range(1, 101) <= PlayerStatus.CriticalHitChance;
 

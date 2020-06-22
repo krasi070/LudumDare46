@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
         if (MapStatus.PlayerPosition != null)
         {
             transform.position = MapStatus.PlayerPosition;
+            Camera.main.transform.position = MapStatus.PlayerPosition;
         }
 
         demonLifeUI.UpdateDemonLife();
